@@ -1,0 +1,15 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+::selection { background: rgba(168, 85, 247, 0.4); color: #fff; }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: #0a0420; } ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 3px; }
+html { scroll-behavior: smooth; } body { overflow-x: hidden; }
+.chrome-text { background: linear-gradient(180deg, #f5f0ff 0%, #d8b4fe 12%, #a855f7 25%, #7c3aed 38%, #c084fc 52%, #f5f0ff 65%, #a855f7 78%, #6d28d9 90%, #c084fc 100%); background-size: 100% 200%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: chromeShift 6s ease-in-out infinite; }
+@keyframes chromeShift { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } }
+.chrome-glow { position: relative; } .chrome-glow::after { content: attr(data-text); position: absolute; inset: 0; background: none; -webkit-text-fill-color: rgba(168, 85, 247, 0.15); filter: blur(25px); pointer-events: none; z-index: -1; }
+.hexagon { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+.glass { background: rgba(26, 11, 61, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(168, 85, 247, 0.15); }
+.glass-card { background: rgba(26, 11, 61, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); box-shadow: 0 0 20px rgba(168, 85, 247, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05); transition: all 0.4s ease; }
+.glass-card:hover { border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 0 30px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08); transform: translateY(-4px) scale(1.01); }
+.neon-line { height: 1px; background: linear-gradient(90deg, transparent, #a855f7, transparent); box-shadow: 0 0 8px rgba(168, 85, 247, 0.5); }
+.btn-glow { position: relative; overflow: hidden; transition: all 0.3s ease; } .btn-glow:hover { box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), 0 0 50px rgba(168, 85, 247, 0.2); transform: translateY(-2px); }
+.scan-lines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(168, 85, 247, 0.03) 2px, rgba(168, 85, 247, 0.03) 4px); }
