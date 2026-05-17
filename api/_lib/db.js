@@ -5,10 +5,33 @@ const authToken = process.env.TURSO_AUTH_TOKEN;
 // Ubah libsql:// menjadi https:// agar kompatibel dengan Web Fetch API
 const url = rawUrl ? rawUrl.replace(/^libsql:\/\//, 'https://') : '';
 
-export async function execute(sql, args = []) {
+// Fungsi helper untuk mengubah argumen JS ke format Turso HTTP API
+function formatArgs(args) {
+  return args.map(arg => {
+    if (arg === null || arg === undefined) {
+      return { type: "null" };
+    } else if (typeof arg === 'number') {
+      if (Number.isInteger(arg)) {
+        return { type: "integer", value: arg };
+      } else {
+        return { type: "float", value: arg };
+      }
+    } else if (typeof arg === 'string') {
+      return { type: "text", value: arg };
+    } else {
+      // Untuk tipe lain (boolean, objek), konversi ke string
+      return { type: "text", value: String(arg) };
+    }
+  });
+}
+
+export async function execute(sql, rawArgs = []) {
   if (!url || !authToken) {
     throw new Error("TURSO_DATABASE_URL atau TURSO_AUTH_TOKEN belum diset di Vercel Environment Variables");
   }
+
+  // Format argumen ke standar Turso
+  const args = formatArgs(rawArgs);
 
   const body = {
     requests: [
