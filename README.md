@@ -11,17 +11,17 @@
 │           └── [orderId].js
 ├── src/
 │   ├── components/
-│   │   ├── ParticleBackground.jsx   <-- PASTIKAN .jsx
-│   │   ├── Navbar.jsx               <-- PASTIKAN .jsx
-│   │   ├── Hero.jsx                 <-- PASTIKAN .jsx
-│   │   ├── Features.jsx             <-- PASTIKAN .jsx
-│   │   ├── WhyChooseUs.jsx          <-- PASTIKAN .jsx
-│   │   ├── Pricing.jsx              <-- PASTIKAN .jsx
-│   │   ├── CheckoutModal.jsx        <-- PASTIKAN .jsx
-│   │   └── Footer.jsx               <-- PASTIKAN .jsx
+│   │   ├── ParticleBackground.jsx   
+│   │   ├── Navbar.jsx              
+│   │   ├── Hero.jsx                 
+│   │   ├── Features.jsx             
+│   │   ├── WhyChooseUs.jsx          
+│   │   ├── Pricing.jsx              
+│   │   ├── CheckoutModal.jsx        
+│   │   └── Footer.jsx               
 │   ├── hooks/
 │   │   └── useScrollAnimation.js
-│   ├── App.jsx                      <-- PASTIKAN .jsx
+│   ├── App.jsx                      
 │   ├── api.js
 │   ├── index.css
 │   └── main.jsx
