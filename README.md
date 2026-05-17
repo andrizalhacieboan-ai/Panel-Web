@@ -1,5 +1,5 @@
 # Panel Website
-``
+
 ├── api/
 │   ├── _lib/
 │   │   ├── db.js
@@ -31,4 +31,3 @@
 ├── vite.config.js
 ├── tailwind.config.js
 └── postcss.config.js
-``
