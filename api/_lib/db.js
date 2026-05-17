@@ -1,8 +1,15 @@
 // api/_lib/db.js
-const url = process.env.TURSO_DATABASE_URL;
+const rawUrl = process.env.TURSO_DATABASE_URL;
 const authToken = process.env.TURSO_AUTH_TOKEN;
 
+// Ubah libsql:// menjadi https:// agar kompatibel dengan Web Fetch API
+const url = rawUrl ? rawUrl.replace(/^libsql:\/\//, 'https://') : '';
+
 export async function execute(sql, args = []) {
+  if (!url || !authToken) {
+    throw new Error("TURSO_DATABASE_URL atau TURSO_AUTH_TOKEN belum diset di Vercel Environment Variables");
+  }
+
   const body = {
     requests: [
       { type: "execute", stmt: { sql, args } },
