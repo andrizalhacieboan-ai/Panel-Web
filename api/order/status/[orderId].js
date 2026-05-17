@@ -1,4 +1,4 @@
-    import { db, initDb } from '../../_lib/db.js';
+import { db, initDb } from '../../_lib/db.js';
 import { cekPaid } from '../../_lib/pakasir.js';
 import { createPanel, createAdmin } from '../../_lib/pterodactyl.js';
 
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    await initDb();
+    
     const { orderId } = req.query;
 
     const result = await db.execute({ sql: `SELECT * FROM orders WHERE orderId = ?`, args: [orderId] });
