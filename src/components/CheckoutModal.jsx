@@ -72,7 +72,7 @@ export default function CheckoutModal({ isOpen, onClose, paket }) {
               <input type="text" placeholder="Masukkan Username" value={username} onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))} className="w-full px-5 py-3.5 rounded-xl bg-cyber-dark border border-neon-purple/20 text-white focus:outline-none focus:border-neon-purple focus:shadow-[0_0_10px_rgba(168,85,247,0.2)] mb-4 text-center font-heading transition-all" />
               
               <div className="relative mb-6">
-                <input type={showPass ? "text" : "password"} placeholder="Buat Password (Min. 8 Karakter)" value={password} onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))} className="w-full px-5 py-3.5 rounded-xl bg-cyber-dark border border-neon-purple/20 text-white focus:outline-none focus:border-neon-purple focus:shadow-[0_0_10px_rgba(168,85,247,0.2)] text-center font-heading pr-12 transition-all" />
+                <input type={showPass ? "text" : "password"} placeholder="Buat Password Anda" value={password} onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))} className="w-full px-5 py-3.5 rounded-xl bg-cyber-dark border border-neon-purple/20 text-white focus:outline-none focus:border-neon-purple focus:shadow-[0_0_10px_rgba(168,85,247,0.2)] text-center font-heading pr-12 transition-all" />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-neon-purple-light transition-colors">{showPass ? <FaEyeSlash /> : <FaEye />}</button>
               </div>
               
