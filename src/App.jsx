@@ -12,7 +12,6 @@ import { useState } from 'react';
 import CheckoutModal from './components/CheckoutModal';
 
 export default function App() {
-  // State untuk Checkout Modal global (bisa dipanggil dari Keranjang/Pricing)
   const [checkoutPaket, setCheckoutPaket] = useState(null);
   const [isOpenCheckout, setIsOpenCheckout] = useState(false);
   const [initialOwnerName, setInitialOwnerName] = useState('');
@@ -31,7 +30,6 @@ export default function App() {
           <Navbar />
           <Hero />
           <Features />
-          {/* Kirim fungsi checkout ke Pricing agar tombol BELI langsung bayar */}
           <Pricing onDirectCheckout={handleOpenCheckout} /> 
           <WhyChooseUs />
           <Footer />
