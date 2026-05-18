@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'; 
 import { createOrder, checkOrderStatus } from '../api'; 
-import { FaTimes, FaSpinner, FaCheckCircle, FaCrown, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaTimes, FaSpinner, FaCheckCircle, FaCrown, FaEye, FaEyeSlash, FaExclamationTriangle } from 'react-icons/fa';
 
 export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName = '' }) {
   const [step, setStep] = useState('input'); 
@@ -25,7 +25,6 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
       setErrorMsg(''); 
       clearInterval(pollInterval.current); 
     } else {
-      // Saat modal dibuka, jika ada nama pemilik dari Keranjang, isi otomatis
       if (initialOwnerName) {
         setUsername(initialOwnerName.replace(/\s/g, ''));
       }
@@ -71,11 +70,12 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
   const isAdmin = paket.type === 'admin';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
       <div className="glass-card rounded-3xl w-full max-w-md relative overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.2)] border border-neon-purple/30">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-10 bg-cyber-dark/50 rounded-full p-1 transition-colors"><FaTimes size={18} /></button>
         
         <div className="p-8">
+          {/* ==================== STEP 1: INPUT ==================== */}
           {step === 'input' && (
             <div className="text-center">
               <div className="text-5xl mb-4">{isAdmin ? <FaCrown className="text-yellow-400 mx-auto drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" /> : '🛒'}</div>
@@ -103,12 +103,47 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
                 </button>
               </div>
               
-              <button onClick={handleOrder} className={`btn-glow w-full py-4 rounded-xl font-heading font-bold tracking-wider text-white transition-all ${isAdmin ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark'}`}>
+              <button 
+                onClick={() => {
+                  if (!username || !password) return alert('Username dan Password wajib diisi!'); 
+                  if (password.length < 8) return alert('Password minimal 8 karakter!');
+                  setStep('confirm'); // Pindah ke tahap konfirmasi
+                }} 
+                className={`btn-glow w-full py-4 rounded-xl font-heading font-bold tracking-wider text-white transition-all ${isAdmin ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark'}`}
+              >
                 BAYAR SEKARANG
               </button>
             </div>
           )}
+
+          {/* ==================== STEP 2: KONFIRMASI ==================== */}
+          {step === 'confirm' && (
+            <div className="text-center py-4">
+              <div className="w-16 h-16 rounded-full bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center mx-auto mb-5 text-neon-purple-light">
+                <FaExclamationTriangle size={32} />
+              </div>
+              <h3 className="font-heading font-bold text-2xl text-white mb-3">Konfirmasi Pembelian</h3>
+              <p className="text-gray-300 text-sm mb-2">Anda yakin membeli produk ini?</p>
+              <p className="text-white font-heading font-bold text-lg mb-8">{paket.name} - Rp {paket.harga.toLocaleString('id-ID')}</p>
+              
+              <div className="flex gap-4">
+                <button 
+                  onClick={onClose} 
+                  className="w-1/2 py-3.5 rounded-xl border border-gray-500/40 text-gray-300 font-heading font-bold tracking-wider transition-all hover:bg-gray-500/10"
+                >
+                  Tidak
+                </button>
+                <button 
+                  onClick={handleOrder} 
+                  className={`w-1/2 py-3.5 rounded-xl font-heading font-bold tracking-wider text-white transition-all btn-glow ${isAdmin ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark'}`}
+                >
+                  Ya, Lanjut
+                </button>
+              </div>
+            </div>
+          )}
           
+          {/* ==================== STEP 3: LOADING ==================== */}
           {step === 'loading' && ( 
             <div className="text-center py-12">
               <FaSpinner className="animate-spin text-neon-purple text-5xl mx-auto mb-4" />
@@ -116,6 +151,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
             </div> 
           )}
           
+          {/* ==================== STEP 4: QRIS ==================== */}
           {step === 'qris' && (
             <div className="text-center">
               <h3 className="font-heading font-bold text-xl text-white mb-2">Scan QRIS untuk Bayar</h3>
@@ -130,6 +166,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
             </div>
           )}
           
+          {/* ==================== STEP 5: SUCCESS ==================== */}
           {step === 'success' && panelData && (
             <div className="text-center">
               <FaCheckCircle className="text-neon-green text-6xl mx-auto mb-5 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
@@ -151,6 +188,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
             </div>
           )}
           
+          {/* ==================== STEP 6: ERROR ==================== */}
           {step === 'error' && (
             <div className="text-center py-8">
               <div className="text-5xl mb-4">❌</div>
