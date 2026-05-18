@@ -7,6 +7,11 @@ export default function CartDrawer({ onCheckoutItem }) {
 
   if (!isDrawerOpen) return null;
 
+  const handleCheckout = (item) => {
+    onCheckoutItem(item); // Kirim data ke Checkout Modal
+    setIsDrawerOpen(false); // Tutup drawer agar tidak menutupi Modal
+  };
+
   return (
     <div className="fixed inset-0 z-[70] flex justify-end bg-black/70 backdrop-blur-sm" onClick={() => setIsDrawerOpen(false)}>
       <div className="w-full max-w-md h-full bg-cyber-dark border-l border-neon-purple/30 shadow-[-10px_0_30px_rgba(168,85,247,0.1)] flex flex-col" onClick={e => e.stopPropagation()}>
@@ -38,7 +43,7 @@ export default function CartDrawer({ onCheckoutItem }) {
                 <div className="flex items-center justify-between mt-1">
                   <p className="text-neon-purple-light font-bold text-sm">Rp {item.paket.harga.toLocaleString('id-ID')}</p>
                   <button 
-                    onClick={() => onCheckoutItem(item)} 
+                    onClick={() => handleCheckout(item)} 
                     className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-neon-purple to-neon-purple-dark text-white text-[11px] font-heading font-bold tracking-wider btn-glow"
                   >
                     Beli Sekarang
