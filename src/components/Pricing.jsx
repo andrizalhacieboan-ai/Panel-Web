@@ -1,7 +1,8 @@
-import { useState } from 'react'; 
-import { useScrollAnimation } from '../hooks/useScrollAnimation'; 
-import CheckoutModal from './CheckoutModal'; 
-import { FaCrown, FaGlobeAsia, FaServer } from 'react-icons/fa';
+import { useState, useContext } from 'react'; 
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { CartContext } from './CartContext';
+import OwnerNameModal from './OwnerNameModal';
+import { FaCrown, FaGlobeAsia, FaServer, FaCartPlus } from 'react-icons/fa';
 
 const paketList = [
   { type: "panel", name: "1GB RAM", ram: "1gb", harga: 2000 }, { type: "panel", name: "2GB RAM", ram: "2gb", harga: 4000 },
@@ -12,11 +13,21 @@ const paketList = [
   { type: "panel", name: "Unlimited RAM", ram: "unlimited", harga: 20000 }, { type: "admin", name: "Admin Panel", ram: null, harga: 25000 }
 ];
 
-export default function Pricing() { 
-  const [sp, ssp] = useState(null); 
-  const [m, sm] = useState(false); 
+export default function Pricing({ onDirectCheckout }) { 
+  const [selectedPaket, setSelectedPaket] = useState(null); 
+  const [isOwnerModalOpen, setIsOwnerModalOpen] = useState(false);
+  const { addToCart } = useContext(CartContext);
   const [ref, isVisible] = useScrollAnimation(); 
-  
+
+  const handleAddToCartClick = (paket) => {
+    setSelectedPaket(paket);
+    setIsOwnerModalOpen(true);
+  };
+
+  const handleSaveToCart = (ownerName, paket) => {
+    addToCart(ownerName, paket);
+  };
+
   return (
     <section id="harga" className="relative py-20 px-4">
       <div ref={ref} className={`max-w-7xl mx-auto transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -32,39 +43,58 @@ export default function Pricing() {
           <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark via-cyber-dark/70 to-transparent"></div>
           <div className="absolute top-0 left-0 h-full flex flex-col justify-center p-6 md:p-10 z-10">
             <div className="flex items-center gap-2 text-neon-purple-light mb-2"><FaGlobeAsia /><span className="font-heading font-bold text-[10px] tracking-widest uppercase">Network Status</span></div>
-            <h3 className="font-heading font-black text-xl md:text-4xl text-white mb-2 drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)]">HIGH PERFORMANCE SERVER</h3>
-            <p className="text-gray-300 text-xs md:text-sm max-w-md">Mainkan di server dengan performa terbaik dan DDoS protection 24/7 tanpa lag!</p>
+            <h3 className="font-heading font-black text-xl md:text-4xl text-white mb-2">HIGH PERFORMANCE SERVER</h3>
+            <p className="text-gray-300 text-xs md:text-sm max-w-md">Mainkan di server dengan performa terbaik dan DDoS protection 24/7!</p>
           </div>
         </div>
 
-        {/* Grid Paket Harga dengan Banner Masing-masing */}
+        {/* Grid Paket Harga */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
           {paketList.map((p) => (
             <div key={p.name} className={`glass-card rounded-2xl overflow-hidden flex flex-col group relative transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(168,85,247,0.2)] ${p.type === 'admin' ? 'border-yellow-500/30' : ''}`}>
               
-              {/* Banner Gambar Card */}
               <div className="relative w-full aspect-video overflow-hidden">
                 <img src="https://c.termai.cc/i100/8UN2g.jpeg" alt={p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-transparent to-transparent opacity-80"></div>
                 {p.type === 'admin' && (<div className="absolute top-2 right-2 bg-yellow-500 text-black text-[9px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"><FaCrown size={8} /> SPECIAL</div>)}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-neon-purple/30 border border-neon-purple/50 backdrop-blur-sm flex items-center justify-center text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-neon-purple/30 border border-neon-purple/50 backdrop-blur-sm flex items-center justify-center text-white">
                   {p.type === 'admin' ? <FaCrown className="text-yellow-400 text-xs" /> : <FaServer className="text-xs" />}
                 </div>
               </div>
 
-              {/* Konten Teks Card */}
               <div className="p-4 md:p-5 flex flex-col items-center text-center flex-1 pt-2">
                 <h3 className="font-heading font-bold text-sm md:text-base text-white mb-1">{p.name}</h3>
                 <p className="text-lg md:text-2xl font-heading font-black text-neon-purple-light mb-0.5">Rp {p.harga.toLocaleString('id-ID')}</p>
                 <p className="text-[9px] md:text-[10px] text-gray-500 mb-4">/bulan</p>
-                <button onClick={() => { ssp(p); sm(true); }} className={`mt-auto w-full py-2 md:py-2.5 rounded-xl font-heading font-bold text-[11px] md:text-xs tracking-wider transition-all ${p.type === 'admin' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'border border-neon-purple/40 text-neon-purple-light hover:bg-neon-purple/10 hover:border-neon-purple/70'}`}>BELI</button>
+                
+                {/* Tombol Aksi */}
+                <div className="mt-auto w-full flex items-center gap-2">
+                  <button 
+                    onClick={() => handleAddToCartClick(p)} 
+                    className="w-1/3 py-2.5 rounded-xl border border-neon-purple/40 text-neon-purple-light hover:bg-neon-purple/10 hover:border-neon-purple/70 flex items-center justify-center text-lg transition-all"
+                    title="Masukkan Keranjang"
+                  >
+                    <FaCartPlus />
+                  </button>
+                  <button 
+                    onClick={() => onDirectCheckout(p)} 
+                    className={`w-2/3 py-2.5 rounded-xl font-heading font-bold text-[11px] md:text-xs tracking-wider transition-all ${p.type === 'admin' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark text-white hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}
+                  >
+                    BELI
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
-
       </div>
-      <CheckoutModal isOpen={m} onClose={() => sm(false)} paket={sp} />
+      
+      <OwnerNameModal 
+        isOpen={isOwnerModalOpen} 
+        onClose={() => setIsOwnerModalOpen(false)} 
+        onConfirm={handleSaveToCart} 
+        paket={selectedPaket} 
+      />
     </section>
   ); 
 }
