@@ -93,7 +93,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
               <div className="relative mb-6">
                 <input 
                   type={showPass ? "text" : "password"} 
-                  placeholder="Buat Password (Min. 8 Karakter)" 
+                  placeholder="Buat Password Anda" 
                   value={password} 
                   onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))} 
                   className="w-full px-5 py-3.5 rounded-xl bg-cyber-dark border border-neon-purple/20 text-white focus:outline-none focus:border-neon-purple focus:shadow-[0_0_10px_rgba(168,85,247,0.2)] text-center font-heading pr-12 transition-all" 
