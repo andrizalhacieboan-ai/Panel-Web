@@ -48,12 +48,12 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Video Content */}
-        <div className="flex-1 w-full max-w-xl" style={{ perspective: '1000px' }}>
+        {/* Right Video Content - Aspect Rasio 16:9 (Persegi Panjang) */}
+        <div className="flex-1 w-full max-w-2xl" style={{ perspective: '1000px' }}>
           <div className="relative rounded-2xl overflow-hidden border-2 border-neon-purple/30 shadow-[0_0_50px_rgba(168,85,247,0.2)] transition-all duration-700 hover:shadow-[0_0_80px_rgba(168,85,247,0.4)] hover:border-neon-purple/50 group">
             
-            {/* Video Element */}
-            <div className="relative aspect-[9/16] sm:aspect-[3/4] bg-cyber-dark">
+            {/* Video Element 16:9 */}
+            <div className="relative aspect-video bg-cyber-dark">
               <video 
                 autoPlay 
                 loop 
@@ -69,9 +69,9 @@ export default function Hero() {
             </div>
 
             {/* Floating 3D Hexagon */}
-            <div className="absolute -bottom-5 -right-5 animate-float-3d z-20">
-              <div className="w-16 h-16 hexagon bg-gradient-to-br from-neon-purple to-neon-purple-dark flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.6)] border border-neon-purple-light/20">
-                <span className="text-lg font-heading font-black text-white">AS</span>
+            <div className="absolute -bottom-4 -right-4 animate-float-3d z-20">
+              <div className="w-14 h-14 hexagon bg-gradient-to-br from-neon-purple to-neon-purple-dark flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.6)] border border-neon-purple-light/20">
+                <span className="text-sm font-heading font-black text-white">AS</span>
               </div>
             </div>
 
