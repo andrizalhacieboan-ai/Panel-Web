@@ -1,7 +1,7 @@
 import { useState } from 'react'; 
 import { useScrollAnimation } from '../hooks/useScrollAnimation'; 
 import CheckoutModal from './CheckoutModal'; 
-import { FaCrown } from 'react-icons/fa';
+import { FaCrown, FaMapMarkedAlt } from 'react-icons/fa';
 
 const paketList = [
   { type: "panel", name: "1GB RAM", ram: "1gb", harga: 2000 }, { type: "panel", name: "2GB RAM", ram: "2gb", harga: 4000 },
@@ -20,11 +20,38 @@ export default function Pricing() {
   return (
     <section id="harga" className="relative py-24 px-4">
       <div ref={ref} className={`max-w-7xl mx-auto transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        
         <div className="text-center mb-16">
           <h2 className="font-heading font-bold text-3xl sm:text-4xl text-white mb-4">PILIH <span className="text-neon-purple">PAKET</span> KAMU</h2>
           <div className="neon-line w-32 mx-auto" />
         </div>
-        
+
+        {/* Map / Server Showcase Banner (Persegi Panjang) */}
+        <div className="w-full rounded-2xl overflow-hidden border border-neon-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.15)] mb-12 relative group card-3d">
+          <img 
+            src="https://c.termai.cc/i181/RG3.jpg" 
+            alt="Server Map Showcase" 
+            className="w-full aspect-[21/9] md:aspect-[3/1] object-cover transition-transform duration-700 group-hover:scale-105" 
+          />
+          {/* Gradient Overlay agar teks terbaca */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark via-cyber-dark/60 to-transparent"></div>
+          
+          {/* Teks di atas banner */}
+          <div className="absolute top-0 left-0 h-full flex flex-col justify-center p-8 md:p-12 z-10">
+            <div className="flex items-center gap-2 text-neon-purple-light mb-2">
+              <FaMapMarkedAlt className="text-xl" />
+              <span className="font-heading font-bold text-sm tracking-widest uppercase">Featured Server</span>
+            </div>
+            <h3 className="font-heading font-black text-2xl md:text-4xl text-white mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              HIGH PERFORMANCE MAP
+            </h3>
+            <p className="text-gray-300 text-sm md:text-base max-w-md">
+              Mainkan di server dengan performa terbaik dan DDoS protection 24/7 tanpa lag!
+            </p>
+          </div>
+        </div>
+
+        {/* Grid Paket Harga */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
           {paketList.map((p) => (
             <div key={p.name} className={`glass-card card-3d rounded-2xl p-6 md:p-8 flex flex-col items-center text-center group relative overflow-hidden ${p.type === 'admin' ? 'border-yellow-500/30' : ''}`}>
