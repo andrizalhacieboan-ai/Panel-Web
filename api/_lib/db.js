@@ -10,16 +10,9 @@ function formatArgs(args) {
   return args.map(arg => {
     if (arg === null || arg === undefined) {
       return { type: "null" };
-    } else if (typeof arg === 'number') {
-      if (Number.isInteger(arg)) {
-        return { type: "integer", value: arg };
-      } else {
-        return { type: "float", value: arg };
-      }
-    } else if (typeof arg === 'string') {
-      return { type: "text", value: arg };
     } else {
-      // Untuk tipe lain (boolean, objek), konversi ke string
+      // Kirim semua data sebagai "text" (string) untuk menghindari error JSON parsing di Turso.
+      // SQLite akan otomatis mengubah string angka menjadi INTEGER berdasarkan tipe kolom tabelnya.
       return { type: "text", value: String(arg) };
     }
   });
@@ -71,6 +64,7 @@ export async function execute(sql, rawArgs = []) {
       if (cell === null) {
         obj[col.name] = null;
       } else if (typeof cell === 'object' && cell.type) {
+        // Saat membaca data dari DB, kembalikan integer ke bentuk angka JavaScript
         obj[col.name] = cell.type === 'integer' ? Number(cell.value) : cell.value;
       } else {
         obj[col.name] = cell;
