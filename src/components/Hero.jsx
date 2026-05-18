@@ -26,12 +26,12 @@ export default function Hero() {
           </div>
           <p className="text-gray-500 text-xs mb-6">Tidak ada server lain yang dapat ditampilkan.</p>
           
-          <h1 className="chrome-text chrome-glow font-heading font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none mb-3" data-text="Andri store">
-            Andri store
+          <h1 className="chrome-text chrome-glow font-heading font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none mb-3" data-text="ANDRI STORE">
+            ANDRI STORE
           </h1>
           
           <p className="font-heading italic text-neon-purple-light text-xl sm:text-2xl mb-8 tracking-wide drop-shadow-[0_0_8px_rgba(192,132,252,0.4)]">
-            Oleh Andri
+            SUBSCRIBE YT andristoreID
           </p>
           
           <div className="mb-10 flex justify-center lg:justify-start">
