@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CartContext } from 'CartContext';
+import { CartContext } from './CartContext';
 import { FaTimes, FaTrash } from 'react-icons/fa';
 
 export default function CartDrawer({ onCheckoutItem }) {
