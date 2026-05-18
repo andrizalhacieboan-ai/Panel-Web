@@ -1,3 +1,4 @@
+// api/order/status/[orderId].js
 import { execute } from '../../_lib/db.js';
 import { cekPaid } from '../../_lib/pakasir.js';
 import { createPanel, createAdmin } from '../../_lib/pterodactyl.js';
@@ -36,7 +37,8 @@ export default async function handler(req, res) {
         );
         res.status(200).json({ success: true, status: 'paid', panelData: panelRes.data });
       } else {
-        res.status(200).json({ success: true, status: 'paid', panelData: null, error: panelRes.message });
+        // Mengirim error asli dari Pterodactyl ke frontend
+        res.status(200).json({ success: true, status: 'paid', panelData: null, error: panelRes.message || "Gagal membuat panel" });
       }
     } else {
       if (Date.now() - order.createdAt > 6 * 60 * 1000) {
