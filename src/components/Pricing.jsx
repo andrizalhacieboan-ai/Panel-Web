@@ -1,7 +1,7 @@
 import { useState } from 'react'; 
 import { useScrollAnimation } from '../hooks/useScrollAnimation'; 
 import CheckoutModal from './CheckoutModal'; 
-import { FaCrown, FaMapMarkedAlt, FaServer } from 'react-icons/fa';
+import { FaCrown, FaGlobeAsia, FaServer } from 'react-icons/fa';
 
 const paketList = [
   { type: "panel", name: "1GB RAM", ram: "1gb", harga: 2000 }, { type: "panel", name: "2GB RAM", ram: "2gb", harga: 4000 },
@@ -26,7 +26,7 @@ export default function Pricing() {
           <div className="neon-line w-32 mx-auto" />
         </div>
 
-        {/* Top Featured Banner (Masih pakai gambar map sebelumnya) */}
+        {/* Top Featured Banner */}
         <div className="w-full rounded-2xl overflow-hidden border border-neon-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.15)] mb-16 relative group card-3d">
           <img 
             src="https://c.termai.cc/i181/RG3.jpg" 
@@ -36,7 +36,7 @@ export default function Pricing() {
           <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark via-cyber-dark/70 to-transparent"></div>
           <div className="absolute top-0 left-0 h-full flex flex-col justify-center p-8 md:p-12 z-10">
             <div className="flex items-center gap-2 text-neon-purple-light mb-2">
-              <FaMapMarkedAlt className="text-xl" />
+              <FaGlobeAsia className="text-xl" />
               <span className="font-heading font-bold text-sm tracking-widest uppercase">Network Status</span>
             </div>
             <h3 className="font-heading font-black text-2xl md:text-4xl text-white mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
