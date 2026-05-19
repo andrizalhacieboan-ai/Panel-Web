@@ -64,3 +64,34 @@ body { overflow-x: hidden; background: #0a0420; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* ===== Animasi Halaman Developer ===== */
+@keyframes fadeInUpOrange {
+  0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float3dOrange {
+  0% { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
+  50% { transform: translateY(-12px) rotateY(8deg) rotateX(4deg); }
+  100% { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
+}
+
+.animate-fade-in-up-orange {
+  animation: fadeInUpOrange 0.8s ease-out forwards;
+}
+
+.animate-float-3d-orange {
+  animation: float3dOrange 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* Efek 3D Tilt untuk Card Developer */
+.card-3d-orange {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  transform-style: preserve-3d;
+}
+.card-3d-orange:hover {
+  transform: translateY(-8px) rotateX(3deg) rotateY(-2deg);
+  box-shadow: 0 30px 60px rgba(249, 115, 22, 0.15), 0 0 20px rgba(249, 115, 22, 0.1);
+}
