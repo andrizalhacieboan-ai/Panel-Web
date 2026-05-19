@@ -4,7 +4,7 @@ import { FaArrowLeft, FaGithub, FaDiscord, FaInstagram, FaEnvelope, FaMapMarkerA
 export default function DeveloperPage() {
   // Data placeholder (Silakan diubah sesuai kebutuhan)
   const devData = {
-    name: "Andri Store",
+    name: "ANDRI STORE",
     role: "Fullstack Developer",
     age: "24 Tahun",
     location: "Pekanbaru, Indonesia",
@@ -42,9 +42,12 @@ export default function DeveloperPage() {
             {/* Template Foto Developer */}
             <div className="flex-shrink-0 relative group">
               <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-orange-500/50 bg-black/50 flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.3)] group-hover:shadow-[0_0_50px_rgba(249,115,22,0.5)] transition-all duration-500 relative overflow-hidden">
-                {/* Ikon Placeholder - Ganti dengan tag <img> jika sudah punya foto */}
-                <FaUser className="text-orange-500/30 text-8xl group-hover:scale-110 transition-transform duration-500" />
-                
+                {/* Foto Developer */}
+<img 
+  src="https://c.termai.cc/i144/CTQEXTa.jpeg" 
+  alt="ⓒ ANDRI STORE" 
+  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+/>
                 {/* Overlay hover */}
                 <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -99,10 +102,10 @@ export default function DeveloperPage() {
               Sosial Media
             </h3>
             <div className="flex gap-4 justify-center md:justify-start">
-              <a href={devData.socials.github} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
+              <a href={devData.socials.youtube} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
                 <FaGithub size={20} />
               </a>
-              <a href={devData.socials.discord} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
+              <a href={devData.socials.tiktok} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
                 <FaDiscord size={20} />
               </a>
               <a href={devData.socials.instagram} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
