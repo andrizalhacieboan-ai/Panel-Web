@@ -3,6 +3,9 @@ import { cancelPayment } from '../_lib/pakasir.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
@@ -12,10 +15,9 @@ export default async function handler(req, res) {
 
     if (!orderId || !amount) return res.status(400).json({ success: false, message: "Data tidak lengkap" });
 
-    // Panggil API Cancel Pakasir
-    await cancelPayment(orderId, amount);
+    // FIX: Konversi amount ke number
+    await cancelPayment(orderId, Number(amount));
 
-    // Update DB menjadi cancelled
     await execute("UPDATE orders SET status = 'cancelled' WHERE orderId = ?", [orderId]);
 
     res.status(200).json({ success: true, message: "Order berhasil dibatalkan" });
