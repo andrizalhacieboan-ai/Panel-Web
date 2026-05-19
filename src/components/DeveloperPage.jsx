@@ -116,12 +116,12 @@ export default function DeveloperPage() {
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-80"></div>
           
           <h2 className="font-heading font-bold text-2xl text-red-400 mb-6 flex items-center gap-3">
-            <FaLock /> Admin Panel - Manajemen Banner
+            <FaLock /> Admin Panel
           </h2>
 
           {!isLoggedIn ? (
             <form onSubmit={handleLogin} className="space-y-4 max-w-sm">
-              <p className="text-gray-400 text-sm mb-4">Masuk untuk menambahkan banner promosi di halaman utama.</p>
+              <p className="text-gray-400 text-sm mb-4">Masuk untuk menu spesial.</p>
               {loginError && <p className="text-red-400 text-sm bg-red-500/10 p-2 rounded-lg">{loginError}</p>}
               <input 
                 type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}
@@ -139,7 +139,7 @@ export default function DeveloperPage() {
             </form>
           ) : (
             <form onSubmit={handleUploadBanner} className="space-y-4">
-              <p className="text-green-400 text-sm mb-4">✔️ Login berhasil. Silakan masukkan detail banner promosi.</p>
+              <p className="text-green-400 text-sm mb-4">✔️ Login berhasil.</p>
               {uploadMsg && <p className="text-sm bg-black/20 p-2 rounded-lg border border-orange-500/20 text-orange-300">{uploadMsg}</p>}
               <input 
                 type="url" placeholder="URL Gambar Banner (contoh: https://imgur.com/gambar.png)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
