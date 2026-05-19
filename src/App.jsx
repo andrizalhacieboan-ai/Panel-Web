@@ -18,7 +18,7 @@ function LandingPage({ handleOpenCheckout }) {
   return (
     <>
       <ParticleBackground />
-      <div className="relative z-10">
+      <div className="relative z-10 pt-40"> {/* Tambahkan pt-40 di sini */}
         <Navbar />
         <Hero />
         <Features />
