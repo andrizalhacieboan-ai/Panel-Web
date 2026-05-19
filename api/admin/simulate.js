@@ -4,6 +4,9 @@ import { createPanel, createAdmin } from '../_lib/pterodactyl.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
@@ -14,14 +17,16 @@ export default async function handler(req, res) {
     if (username !== 'andriyt' || password !== 'andri2002') return res.status(401).json({ success: false, message: "Akses ditolak!" });
     if (!orderId) return res.status(400).json({ success: false, message: "Order ID kosong" });
 
-    // Cari order di DB
     const orderRes = await execute('SELECT * FROM orders WHERE orderId = ?', [orderId]);
     const order = orderRes.rows[0];
     if (!order) return res.status(404).json({ success: false, message: "Order tidak ditemukan" });
     if (order.status === 'paid') return res.status(400).json({ success: false, message: "Order sudah dibayar!" });
 
+    // FIX: Konversi amount ke number
+    const amountNum = Number(order.amount);
+
     // Jalankan simulasi di Pakasir
-    await simulatePayment(orderId, order.amount);
+    await simulatePayment(orderId, amountNum);
 
     // Update status DB & Buat Panel Pterodactyl
     await execute("UPDATE orders SET status = 'paid' WHERE orderId = ?", [orderId]);
