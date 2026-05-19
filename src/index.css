@@ -96,13 +96,13 @@ body { overflow-x: hidden; background: #0a0420; }
   box-shadow: 0 30px 60px rgba(249, 115, 22, 0.15), 0 0 20px rgba(249, 115, 22, 0.1);
 }
 
-/* ===== Animasi Marquee Banner ===== */
+/* ===== Animasi Marquee Banner (Roda Mulus) ===== */
 @keyframes marquee {
-  0% { transform: translateX(0%); }
+  0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 .animate-marquee {
-  animation: marquee 25s linear infinite;
+  animation: marquee 30s linear infinite; /* Sesuaikan kecepatan di sini */
 }
 .animate-marquee:hover {
   animation-play-state: paused;
