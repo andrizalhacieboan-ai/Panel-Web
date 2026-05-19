@@ -40,19 +40,23 @@ export default function DeveloperPage() {
     }
   };
 
-  const handleUploadBanner = async (e) => {
+    const handleUploadBanner = async (e) => {
     e.preventDefault();
+    setUploadMsg('⏳ Mengunggah banner...');
     try {
-      const res = await axios.post('/hooks/add', { username, password, imageUrl, text: promoText });
+      const res = await axios.post('/api/banners/add', { username, password, imageUrl, text: promoText });
       if (res.data.success) {
-        setUploadMsg('✅ Banner berhasil ditambahkan!');
+        setUploadMsg('✅ Banner berhasil ditambahkan.');
         setImageUrl('');
         setPromoText('');
       } else {
         setUploadMsg('❌ Gagal: ' + res.data.message);
       }
     } catch (err) {
-      setUploadMsg('❌ Gagal terhubung ke server.');
+      // Menampilkan error asli dari backend Vercel
+      const serverError = err.response?.data?.message || err.message;
+      setUploadMsg('❌ Error Server: ' + serverError);
+      console.error("Upload Error Details:", err.response);
     }
   };
 
