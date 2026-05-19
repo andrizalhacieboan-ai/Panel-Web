@@ -10,7 +10,7 @@ import Footer from './components/Footer';
 import FloatingCart from './components/FloatingCart';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
-import PromoBanner from './components/PromoBanner'; // Import Banner
+import PromoBanner from './components/PromoBanner';
 import DeveloperPage from './components/DeveloperPage';
 import { useState } from 'react';
 
@@ -18,7 +18,7 @@ function LandingPage({ handleOpenCheckout }) {
   return (
     <>
       <ParticleBackground />
-      <div className="relative z-10 pt-40"> {/* Tambahkan pt-40 di sini */}
+      <div className="relative z-10 pt-56 md:pt-64"> {/* Padding disesuaikan agar tidak tertutup Navbar + Banner Besar */}
         <Navbar />
         <Hero />
         <Features />
