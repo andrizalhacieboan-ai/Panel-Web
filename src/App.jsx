@@ -11,14 +11,16 @@ import FloatingCart from './components/FloatingCart';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import PromoBanner from './components/PromoBanner';
-import DeveloperPage from './components/DeveloperPage';
+import DeveloperPage from './pages/DeveloperPage';
+import AdminPage from './pages/AdminPage';
 import { useState } from 'react';
 
 function LandingPage({ handleOpenCheckout }) {
   return (
     <>
       <ParticleBackground />
-      <div className="relative z-10 pt-56 md:pt-64"> {/* Padding disesuaikan agar tidak tertutup Navbar + Banner Besar */}
+      <PromoBanner /> {/* Hanya muncul di Beranda */}
+      <div className="relative z-10 pt-52 md:pt-64"> {/* Padding disesuaikan: 64px Navbar + 144/192px Banner */}
         <Navbar />
         <Hero />
         <Features />
@@ -48,12 +50,10 @@ export default function App() {
       <CartProvider>
         <div className="relative min-h-screen bg-gradient-to-b from-cyber-dark via-cyber-deep to-cyber-dark">
           
-          {/* Banner Promo Paling Atas */}
-          <PromoBanner />
-
           <Routes>
             <Route path="/" element={<LandingPage handleOpenCheckout={handleOpenCheckout} />} />
             <Route path="/developer" element={<DeveloperPage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
 
           <CheckoutModal 
