@@ -17,3 +17,19 @@ export async function cekPaid(orderId, amount) {
     const status = res.data?.transaction?.status || res.data?.payment?.status || res.data?.status || "";
     return ["paid", "success", "completed"].includes(String(status).toLowerCase());
 }
+
+// Fitur Baru: Cancel Payment
+export async function cancelPayment(orderId, amount) {
+    const { slug, apiKey } = config;
+    const url = "https://app.pakasir.com/api/transactioncancel";
+    const res = await axios.post(url, { project: slug, api_key: apiKey, order_id: orderId, amount }, { headers: { "Content-Type": "application/json" } });
+    return res.data;
+}
+
+// Fitur Baru: Simulate Payment (Testing)
+export async function simulatePayment(orderId, amount) {
+    const { slug, apiKey } = config;
+    const url = "https://app.pakasir.com/api/paymentsimulation";
+    const res = await axios.post(url, { project: slug, api_key: apiKey, order_id: orderId, amount }, { headers: { "Content-Type": "application/json" } });
+    return res.data;
+}
