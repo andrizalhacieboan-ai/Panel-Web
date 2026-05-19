@@ -105,7 +105,7 @@ export default function DeveloperPage() {
               <a href={devData.socials.youtube} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
                 <FaYoutube size={20} />
               </a>
-FaGith        <a href={devData.socials.tiktok} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
+               <a href={devData.socials.tiktok} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
                 <FaTiktok size={20} />
               </a>
               <a href={devData.socials.instagram} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
