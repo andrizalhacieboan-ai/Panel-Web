@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { CartContext } from './CartContext';
 import OwnerNameModal from './OwnerNameModal';
-import { FaCrown, FaGlobeAsia, FaServer, FaCartPlus } from 'react-icons/fa';
+import { FaCrown, FaServer, FaCartPlus, FaGlobe } from 'react-icons/fa';
 
 const paketList = [
   { type: "panel", name: "1GB RAM", ram: "1gb", harga: 2000 }, { type: "panel", name: "2GB RAM", ram: "2gb", harga: 4000 },
@@ -29,43 +29,73 @@ export default function Pricing({ onDirectCheckout }) {
   };
 
   return (
-    <section id="harga" className="relative py-20 px-4">
-      <div ref={ref} className={`max-w-7xl mx-auto transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+    <section id="harga" className="relative py-24 px-4">
+      <div ref={ref} className={`max-w-7xl mx-auto transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="text-center mb-14">
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl text-white mb-3">PILIH <span className="text-neon-purple">PAKET</span> KAMU</h2>
-          <div className="neon-line w-24 mx-auto" />
+        {/* Heading */}
+        <div className="text-center mb-16">
+          <h2 className="font-heading font-bold text-3xl sm:text-4xl text-white mb-4">PILIH <span className="text-neon-purple">PAKET</span> KAMU</h2>
+          <div className="neon-line w-32 mx-auto" />
         </div>
 
         {/* Top Featured Banner */}
-        <div className="w-full rounded-2xl overflow-hidden border border-neon-purple/30 shadow-[0_0_20px_rgba(168,85,247,0.15)] mb-12 relative group">
-          <img src="https://c.termai.cc/i181/RG3.jpg" alt="Server Map" className="w-full aspect-[2/1] md:aspect-[3/1] object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div className="w-full rounded-2xl overflow-hidden border border-neon-purple/30 shadow-[0_0_30px_rgba(168,85,247,0.15)] mb-16 relative group card-3d">
+          <img 
+            src="https://c.termai.cc/i181/RG3.jpg" 
+            alt="Server Map Showcase" 
+            className="w-full aspect-[2/1] md:aspect-[3/1] object-cover transition-transform duration-500 group-hover:scale-105" 
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-cyber-dark via-cyber-dark/70 to-transparent"></div>
-          <div className="absolute top-0 left-0 h-full flex flex-col justify-center p-6 md:p-10 z-10">
-            <div className="flex items-center gap-2 text-neon-purple-light mb-2"><FaGlobeAsia /><span className="font-heading font-bold text-[10px] tracking-widest uppercase">Network Status</span></div>
-            <h3 className="font-heading font-black text-xl md:text-4xl text-white mb-2">HIGH PERFORMANCE SERVER</h3>
-            <p className="text-gray-300 text-xs md:text-sm max-w-md">Mainkan di server dengan performa terbaik dan DDoS protection 24/7!</p>
+          <div className="absolute top-0 left-0 h-full flex flex-col justify-center p-6 md:p-12 z-10">
+            <div className="flex items-center gap-2 text-neon-purple-light mb-2">
+              <FaGlobe className="text-xl" />
+              <span className="font-heading font-bold text-sm tracking-widest uppercase">Network Status</span>
+            </div>
+            <h3 className="font-heading font-black text-2xl md:text-5xl text-white mb-3 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              HIGH PERFORMANCE SERVER
+            </h3>
+            <p className="text-gray-300 text-sm md:text-base max-w-md hidden sm:block">
+              Mainkan di server dengan performa terbaik dan DDoS protection 24/7 tanpa lag!
+            </p>
           </div>
         </div>
 
-        {/* Grid Paket Harga */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
+        {/* Grid Paket Harga dengan Banner Masing-masing */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {paketList.map((p) => (
-            <div key={p.name} className={`glass-card rounded-2xl overflow-hidden flex flex-col group relative transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(168,85,247,0.2)] ${p.type === 'admin' ? 'border-yellow-500/30' : ''}`}>
+            <div key={p.name} className={`glass-card card-3d rounded-2xl overflow-hidden flex flex-col group relative ${p.type === 'admin' ? 'border-yellow-500/30' : ''}`}>
               
+              {/* Banner Gambar di Atas Card */}
               <div className="relative w-full aspect-video overflow-hidden">
-                <img src="https://c.termai.cc/i100/8UN2g.jpeg" alt={p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img 
+                  src="https://c.termai.cc/i100/8UN2g.jpeg" 
+                  alt={`${p.name} Server`} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-cyber-dark via-transparent to-transparent opacity-80"></div>
-                {p.type === 'admin' && (<div className="absolute top-2 right-2 bg-yellow-500 text-black text-[9px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"><FaCrown size={8} /> SPECIAL</div>)}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-lg bg-neon-purple/30 border border-neon-purple/50 backdrop-blur-sm flex items-center justify-center text-white">
-                  {p.type === 'admin' ? <FaCrown className="text-yellow-400 text-xs" /> : <FaServer className="text-xs" />}
+                
+                {/* Badge Admin */}
+                {p.type === 'admin' && (
+                  <div className="absolute top-3 right-3 bg-yellow-500 text-black text-[10px] font-bold px-3 py-1 rounded-lg shadow-[0_0_10px_rgba(234,179,8,0.4)] flex items-center gap-1">
+                    <FaCrown size={10} /> SPECIAL
+                  </div>
+                )}
+                
+                {/* Ikon di tengah bawah banner */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 rounded-xl bg-neon-purple/20 border border-neon-purple/40 backdrop-blur-md flex items-center justify-center text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+                  {p.type === 'admin' ? <FaCrown className="text-yellow-400" /> : <FaServer className="text-sm" />}
                 </div>
               </div>
 
-              <div className="p-4 md:p-5 flex flex-col items-center text-center flex-1 pt-2">
-                <h3 className="font-heading font-bold text-sm md:text-base text-white mb-1">{p.name}</h3>
-                <p className="text-lg md:text-2xl font-heading font-black text-neon-purple-light mb-0.5">Rp {p.harga.toLocaleString('id-ID')}</p>
-                <p className="text-[9px] md:text-[10px] text-gray-500 mb-4">/bulan</p>
+              {/* Konten Teks di Bawah Banner */}
+              <div className="p-5 flex flex-col items-center text-center flex-1">
+                <h3 className="font-heading font-bold text-lg text-white mb-2 tracking-wide">{p.name}</h3>
+                
+                <div className="mb-1">
+                  <span className="text-xs text-gray-400">Rp</span>
+                  <span className="text-3xl font-heading font-black text-neon-purple-light mx-1">{p.harga.toLocaleString('id-ID')}</span>
+                </div>
+                <p className="text-[11px] text-gray-500 mb-5">/bulan</p>
                 
                 {/* Tombol Aksi */}
                 <div className="mt-auto w-full flex items-center gap-2">
@@ -78,7 +108,7 @@ export default function Pricing({ onDirectCheckout }) {
                   </button>
                   <button 
                     onClick={() => onDirectCheckout(p)} 
-                    className={`w-2/3 py-2.5 rounded-xl font-heading font-bold text-[11px] md:text-xs tracking-wider transition-all ${p.type === 'admin' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark text-white hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}
+                    className={`w-2/3 py-2.5 rounded-xl font-heading font-bold text-sm tracking-wider transition-all ${p.type === 'admin' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark text-white hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]'}`}
                   >
                     BELI
                   </button>
