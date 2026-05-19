@@ -18,8 +18,10 @@ export function HexLogo({ size = 'w-9 h-9', textSize = 'text-xs' }) {
 export default function Navbar() { 
   const [m, sm] = useState(false); 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
-      <div className="glass rounded-full px-4 py-2.5 flex items-center justify-between">
+    // Ubah top-4 menjadi top-0 dan hilangkan rounded-full menjadi rounded-b-xl agar menyatu dengan banner
+<nav className="fixed top-0 left-0 right-0 z-50 w-full">
+  <div className="glass px-6 py-3 flex items-center justify-between shadow-[0_2px_20px_rgba(168,85,247,0.1)]">
+   
         <div className="flex items-center gap-2.5">
           <Link to="/"><HexLogo /></Link> {/* Logo klik ke beranda */}
           <Link to="/" className="font-heading font-bold text-white text-sm tracking-wide hidden sm:block">ANDRI STORE</Link>
