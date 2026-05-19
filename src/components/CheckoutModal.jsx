@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect, useRef } from 'react'; 
 import { createOrder, checkOrderStatus } from '../api'; 
 import { FaTimes, FaSpinner, FaCheckCircle, FaCrown, FaEye, FaEyeSlash, FaExclamationTriangle } from 'react-icons/fa';
@@ -152,16 +153,36 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
           )}
           
           {/* ==================== STEP 4: QRIS ==================== */}
-          {step === 'qris' && (
+                    {step === 'qris' && (
             <div className="text-center">
               <h3 className="font-heading font-bold text-xl text-white mb-2">Scan QRIS untuk Bayar</h3>
               <p className="text-sm text-gray-400 mb-6">Total: <span className="text-white font-bold text-lg">Rp {amount.toLocaleString('id-ID')}</span> <span className="text-xs">(Fee Rp {fee.toLocaleString('id-ID')})</span></p>
               <div className="bg-white p-3 rounded-2xl inline-block mb-6 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                 <img src={qrBase64} alt="QRIS" className="w-64 h-64 rounded-lg" />
               </div>
-              <div className="flex items-center justify-center gap-2 text-neon-purple">
-                <FaSpinner className="animate-spin text-lg" />
-                <p className="text-sm font-medium">Menunggu pembayaran...</p>
+              <div className="flex items-center justify-center gap-4">
+                <div className="flex items-center gap-2 text-neon-purple">
+                  <FaSpinner className="animate-spin text-lg" />
+                  <p className="text-sm font-medium">Menunggu pembayaran...</p>
+                </div>
+                {/* Tombol Cancel Baru */}
+                <button 
+                  onClick={async () => {
+                    if(confirm('Yakin ingin membatalkan pesanan?')) {
+                      try {
+                        await axios.post('/api/order/cancel', { orderId, amount });
+                        clearInterval(pollInterval.current);
+                        setErrorMsg("Pesanan telah dibatalkan.");
+                        setStep('error');
+                      } catch(err) {
+                        alert("Gagal membatalkan: " + (err.response?.data?.message || err.message));
+                      }
+                    }
+                  }} 
+                  className="px-4 py-2 border border-red-500/40 rounded-lg text-red-400 text-xs font-heading font-bold hover:bg-red-500/10 transition-all"
+                >
+                  BATALKAN
+                </button>
               </div>
             </div>
           )}
