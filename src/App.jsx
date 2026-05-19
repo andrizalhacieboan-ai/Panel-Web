@@ -10,10 +10,10 @@ import Footer from './components/Footer';
 import FloatingCart from './components/FloatingCart';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
+import PromoBanner from './components/PromoBanner'; // Import Banner
 import DeveloperPage from './components/DeveloperPage';
 import { useState } from 'react';
 
-// Komponen untuk Landing Page (Index)
 function LandingPage({ handleOpenCheckout }) {
   return (
     <>
@@ -48,15 +48,14 @@ export default function App() {
       <CartProvider>
         <div className="relative min-h-screen bg-gradient-to-b from-cyber-dark via-cyber-deep to-cyber-dark">
           
+          {/* Banner Promo Paling Atas */}
+          <PromoBanner />
+
           <Routes>
-            {/* Route Beranda */}
             <Route path="/" element={<LandingPage handleOpenCheckout={handleOpenCheckout} />} />
-            
-            {/* Route Developer Page */}
             <Route path="/developer" element={<DeveloperPage />} />
           </Routes>
 
-          {/* Modal Checkout Global (Bisa dipanggil dari mana saja) */}
           <CheckoutModal 
             isOpen={isOpenCheckout} 
             onClose={() => setIsOpenCheckout(false)} 
