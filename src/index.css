@@ -35,13 +35,27 @@ body { overflow-x: hidden; background: #0a0420; }
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(168, 85, 247, 0.15);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* Card Hover - Hanya angkat halus, tanpa rotasi agar grid tetap rapi */
 .card-3d:hover {
-  border-color: rgba(168, 85, 247, 0.6);
-  box-shadow: 0 20px 40px rgba(168, 85, 247, 0.2), 0 0 15px rgba(168, 85, 247, 0.1);
-  transform: translateY(-10px) rotateX(4deg) rotateY(-2deg) scale(1.02);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 15px 30px rgba(168, 85, 247, 0.15), 0 0 10px rgba(168, 85, 247, 0.05);
+  transform: translateY(-8px);
+}
+
+/* Inner card image styling */
+.glass-card .card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.glass-card .card-image-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 4, 32, 0.8) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .neon-line { height: 2px; background: linear-gradient(90deg, transparent, #a855f7, transparent); box-shadow: 0 0 10px rgba(168, 85, 247, 0.6); }
