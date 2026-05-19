@@ -14,18 +14,22 @@ import PromoBanner from './components/PromoBanner';
 import DeveloperPage from './pages/DeveloperPage';
 import AdminPage from './pages/AdminPage';
 import { useState } from 'react';
+import TransactionHistory from './components/TransactionHistory';
+
+
 
 function LandingPage({ handleOpenCheckout }) {
   return (
     <>
       <ParticleBackground />
-      <PromoBanner /> {/* Hanya muncul di Beranda */}
-      <div className="relative z-10 pt-52 md:pt-64"> {/* Padding disesuaikan: 64px Navbar + 144/192px Banner */}
+      <PromoBanner />
+      <div className="relative z-10 pt-52 md:pt-64">
         <Navbar />
         <Hero />
         <Features />
         <Pricing onDirectCheckout={handleOpenCheckout} /> 
         <WhyChooseUs />
+        <TransactionHistory /> {/* <-- Sisipkan di sini */}
         <Footer />
       </div>
       <FloatingCart />
