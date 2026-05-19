@@ -103,10 +103,10 @@ export default function DeveloperPage() {
             </h3>
             <div className="flex gap-4 justify-center md:justify-start">
               <a href={devData.socials.youtube} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
-                <FaGithub size={20} />
+                <FaYoutube size={20} />
               </a>
-              <a href={devData.socials.tiktok} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
-                <FaDiscord size={20} />
+FaGith        <a href={devData.socials.tiktok} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
+                <FaTiktok size={20} />
               </a>
               <a href={devData.socials.instagram} className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-300 hover:bg-orange-500/20 hover:text-white hover:shadow-[0_0_15px_rgba(249,115,22,0.3)] transition-all">
                 <FaInstagram size={20} />
