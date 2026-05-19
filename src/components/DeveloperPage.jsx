@@ -62,14 +62,16 @@ export default function DeveloperPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0204] via-[#1a0800] to-[#050005] text-white font-body relative overflow-hidden">
+      {/* Background Orbs */}
       <div className="fixed top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-orange-500/5 blur-3xl pointer-events-none"></div>
       <div className="fixed bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-amber-600/5 blur-3xl pointer-events-none"></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 animate-fade-in-up-orange">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 pt-40 animate-fade-in-up-orange"> {/* Tambahkan pt-40 di sini */}
         
         <Link to="/" className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 font-heading font-bold text-sm mb-10 transition-colors group">
           <FaArrowLeft className="group-hover:-translate-x-2 transition-transform duration-300" /> Kembali ke Beranda
         </Link>
+
 
         <div className="card-3d-orange bg-[#120500]/60 backdrop-blur-xl border border-orange-500/20 rounded-3xl p-8 md:p-12 shadow-[0_0_50px_rgba(249,115,22,0.1)] relative overflow-hidden mb-10">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-80"></div>
