@@ -21,11 +21,11 @@ export default function PromoBanner() {
   if (banners.length === 0) return null;
 
   return (
-    <div className="fixed top-[64px] left-0 right-0 z-40 bg-cyber-dark/90 backdrop-blur-md border-b border-neon-purple/30 shadow-[0_4px_30px_rgba(168,85,247,0.2)] overflow-hidden h-36 md:h-48 flex items-center">
-      <div className="flex items-center gap-8 animate-marquee whitespace-nowrap">
-        {/* Gandakan isi agar efek roda mulus tanpa jeda kosong */}
+    <div className="fixed top-16 left-0 right-0 z-40 bg-cyber-dark/90 backdrop-blur-md border-b border-neon-purple/30 shadow-[0_4px_30px_rgba(168,85,247,0.2)] h-36 md:h-48 flex items-center overflow-hidden">
+      {/* w-max memastikan lebar container menyesuaikan gambar sehingga translateX(-50%) mutlak pas tanpa jeda */}
+      <div className="flex items-center gap-8 animate-marquee whitespace-nowrap w-max">
         {[...banners, ...banners].map((banner, i) => (
-          <div key={i} className="flex-shrink-0 group cursor-pointer">
+          <div key={i} className="flex-shrink-0 group cursor-pointer pl-8">
             <img 
               src={banner.imageUrl} 
               alt="promo" 
