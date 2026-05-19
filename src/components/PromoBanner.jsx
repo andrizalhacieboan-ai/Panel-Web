@@ -7,7 +7,7 @@ export default function PromoBanner() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await axios.get('/hooks/bannerget');
+        const res = await axios.get('/api/banners/get');
         if (res.data.success) {
           setBanners(res.data.banners);
         }
