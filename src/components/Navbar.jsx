@@ -1,5 +1,5 @@
 import { useState } from 'react'; 
-import { Link } from 'react-router-dom'; // Tambahkan import Link
+import { Link } from 'react-router-dom';
 import { FaDiscord } from 'react-icons/fa';
 
 const menuItems = [
@@ -7,7 +7,7 @@ const menuItems = [
   { label: 'FITUR', href: '#fitur', active: false, isRoute: false }, 
   { label: 'HARGA', href: '#harga', active: false, isRoute: false }, 
   { label: 'TENTANG', href: '#tentang', active: false, isRoute: false }, 
-  { label: 'DEVELOPER', href: '/developer', active: false, isRoute: true }, // Menu Baru
+  { label: 'DEVELOPER', href: '/developer', active: false, isRoute: true },
   { label: 'KONTAK', href: '#kontak', active: false, isRoute: false }
 ];
 
@@ -18,24 +18,20 @@ export function HexLogo({ size = 'w-9 h-9', textSize = 'text-xs' }) {
 export default function Navbar() { 
   const [m, sm] = useState(false); 
   return (
-    // Ubah top-4 menjadi top-0 dan hilangkan rounded-full menjadi rounded-b-xl agar menyatu dengan banner
-<nav className="fixed top-0 left-0 right-0 z-50 w-full">
-  <div className="glass px-6 py-3 flex items-center justify-between shadow-[0_2px_20px_rgba(168,85,247,0.1)]">
-   
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-cyber-dark/80 backdrop-blur-md border-b border-neon-purple/20">
+      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <Link to="/"><HexLogo /></Link> {/* Logo klik ke beranda */}
+          <Link to="/"><HexLogo /></Link>
           <Link to="/" className="font-heading font-bold text-white text-sm tracking-wide hidden sm:block">ANDRI STORE</Link>
         </div>
         
         <div className="hidden lg:flex items-center gap-1">
           {menuItems.map((item) => (
             item.isRoute ? (
-              // Jika adalah route (seperti Developer), gunakan Link
               <Link key={item.label} to={item.href} className="px-3 py-1.5 rounded-full text-xs font-heading font-semibold tracking-wider transition-all text-gray-400 hover:text-white hover:bg-white/5">
                 {item.label}
               </Link>
             ) : (
-              // Jika anchor link (#), gunakan tag a
               <a key={item.label} href={item.href} className={`px-3 py-1.5 rounded-full text-xs font-heading font-semibold tracking-wider transition-all ${item.active ? 'text-white bg-neon-purple/20 border-b-2 border-neon-purple' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
                 {item.label}
               </a>
@@ -51,7 +47,7 @@ export default function Navbar() {
       </div>
       
       {m && (
-        <div className="lg:hidden mt-2 glass rounded-2xl p-4 flex flex-col gap-2">
+        <div className="lg:hidden mt-1 glass rounded-2xl p-4 flex flex-col gap-2 mx-4">
           {menuItems.map((item) => (
             item.isRoute ? (
               <Link key={item.label} to={item.href} onClick={() => sm(false)} className="px-4 py-2.5 rounded-xl text-sm font-heading font-semibold text-gray-400 hover:text-white">{item.label}</Link>
