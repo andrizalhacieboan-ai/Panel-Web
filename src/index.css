@@ -38,7 +38,6 @@ body { overflow-x: hidden; background: #0a0420; }
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Efek 3D Hover untuk Card */
 .card-3d:hover {
   border-color: rgba(168, 85, 247, 0.6);
   box-shadow: 0 20px 40px rgba(168, 85, 247, 0.2), 0 0 15px rgba(168, 85, 247, 0.1);
@@ -50,7 +49,6 @@ body { overflow-x: hidden; background: #0a0420; }
 .btn-glow { position: relative; overflow: hidden; transition: all 0.3s ease; border: 1px solid rgba(168, 85, 247, 0.3); }
 .btn-glow:hover { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6), inset 0 0 10px rgba(168, 85, 247, 0.2); transform: translateY(-3px); border-color: rgba(168, 85, 247, 0.8); }
 
-/* Animasi Float 3D */
 @keyframes float-3d {
   0% { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
   50% { transform: translateY(-15px) rotateY(10deg) rotateX(5deg); }
@@ -58,48 +56,25 @@ body { overflow-x: hidden; background: #0a0420; }
 }
 .animate-float-3d { animation: float-3d 8s ease-in-out infinite; transform-style: preserve-3d; }
 
-/* Animasi Rotate untuk border glow */
-@keyframes border-rotate {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 /* ===== Animasi Halaman Developer ===== */
 @keyframes fadeInUpOrange {
   0% { opacity: 0; transform: translateY(40px) scale(0.95); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-
 @keyframes float3dOrange {
   0% { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
   50% { transform: translateY(-12px) rotateY(8deg) rotateX(4deg); }
   100% { transform: translateY(0px) rotateY(0deg) rotateX(0deg); }
 }
+.animate-fade-in-up-orange { animation: fadeInUpOrange 0.8s ease-out forwards; }
+.animate-float-3d-orange { animation: float3dOrange 6s ease-in-out infinite; transform-style: preserve-3d; }
+.card-3d-orange { transition: transform 0.5s ease, box-shadow 0.5s ease; transform-style: preserve-3d; }
+.card-3d-orange:hover { transform: translateY(-8px) rotateX(3deg) rotateY(-2deg); box-shadow: 0 30px 60px rgba(249, 115, 22, 0.15), 0 0 20px rgba(249, 115, 22, 0.1); }
 
-.animate-fade-in-up-orange {
-  animation: fadeInUpOrange 0.8s ease-out forwards;
-}
-
-.animate-float-3d-orange {
-  animation: float3dOrange 6s ease-in-out infinite;
-  transform-style: preserve-3d;
-}
-
-/* Efek 3D Tilt untuk Card Developer */
-.card-3d-orange {
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  transform-style: preserve-3d;
-}
-.card-3d-orange:hover {
-  transform: translateY(-8px) rotateX(3deg) rotateY(-2deg);
-  box-shadow: 0 30px 60px rgba(249, 115, 22, 0.15), 0 0 20px rgba(249, 115, 22, 0.1);
-}
-
-/* ===== Animasi Marquee Banner (Roda Mulus) ===== */
+/* ===== Animasi Marquee Banner (Roda Mulus Tanpa Jeda) ===== */
 @keyframes marquee {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-50%); } /* Persis 50% karena array digandakan */
 }
 .animate-marquee {
   animation: marquee 30s linear infinite; /* Sesuaikan kecepatan di sini */
