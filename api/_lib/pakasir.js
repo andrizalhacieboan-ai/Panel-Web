@@ -30,6 +30,10 @@ export async function cancelPayment(orderId, amount) {
 export async function simulatePayment(orderId, amount) {
     const { slug, apiKey } = config;
     const url = "https://app.pakasir.com/api/paymentsimulation";
-    const res = await axios.post(url, { project: slug, api_key: apiKey, order_id: orderId, amount }, { headers: { "Content-Type": "application/json" } });
-    return res.data;
+    try {
+        const res = await axios.post(url, { project: slug, api_key: apiKey, order_id: orderId, amount }, { headers: { "Content-Type": "application/json" } });
+        return res.data;
+    } catch (err) {
+        throw new Error(err.response?.data?.message || "Gagal simulasi Pakasir");
+    }
 }
