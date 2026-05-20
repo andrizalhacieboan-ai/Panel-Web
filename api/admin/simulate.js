@@ -22,23 +22,36 @@ export default async function handler(req, res) {
     if (!order) return res.status(404).json({ success: false, message: "Order tidak ditemukan" });
     if (order.status === 'paid') return res.status(400).json({ success: false, message: "Order sudah dibayar!" });
 
-    // FIX: Konversi amount ke number
     const amountNum = Number(order.amount);
+    if (!amountNum) return res.status(400).json({ success: false, message: "Amount tidak valid" });
 
-    // Jalankan simulasi di Pakasir
-    await simulatePayment(orderId, amountNum);
+    // Jalankan simulasi
+    try {
+        await simulatePayment(orderId, amountNum);
+    } catch (pakasirErr) {
+        return res.status(400).json({ success: false, message: "Pakasir Error: " + pakasirErr.message });
+    }
 
-    // Update status DB & Buat Panel Pterodactyl
+    // Update status DB
     await execute("UPDATE orders SET status = 'paid' WHERE orderId = ?", [orderId]);
     
-    let panelRes = order.type === 'admin' ? await createAdmin(order.username, order.password) : await createPanel(order.username, order.ram.toLowerCase(), order.password);
+    // Fix: Gunakan fallback 'unli' jika ram null (Admin Panel)
+    const ramKey = (order.ram || 'unli').toLowerCase();
+    
+    let panelRes = order.type === 'admin' 
+        ? await createAdmin(order.username, order.password) 
+        : await createPanel(order.username, ramKey, order.password);
     
     if (panelRes.success) {
       await execute("UPDATE orders SET panelData = ? WHERE orderId = ?", [JSON.stringify(panelRes.data), orderId]);
+      return res.status(200).json({ success: true, message: "Simulasi berhasil! Panel Pterodactyl dibuat." });
+    } else {
+      return res.status(200).json({ success: true, message: "Simulasi berhasil, tapi gagal buat panel: " + (panelRes.message || "Unknown Error") });
     }
 
-    res.status(200).json({ success: true, message: "Simulasi pembayaran berhasil! Panel dibuat." });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error("SIMULATE ERROR:", err);
+    // Pastikan selalu return JSON walau ada error tak terduga
+    res.status(500).json({ success: false, message: err.message || "Internal Server Error" });
   }
 }
