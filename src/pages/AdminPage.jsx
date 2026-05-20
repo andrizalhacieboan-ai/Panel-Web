@@ -11,7 +11,7 @@ export default function AdminPage() {
   
   // Banner state
   const [imageUrl, setImageUrl] = useState('');
-  const [promoText, setPromoText] = useState('');
+  
   const [uploadMsg, setUploadMsg] = useState('');
 
   // Admin Transaksi State
@@ -47,7 +47,7 @@ export default function AdminPage() {
     e.preventDefault();
     setUploadMsg('⏳ Mengunggah banner...');
     try {
-      const res = await axios.post('/api/banners/add', { username, password, imageUrl, text: promoText });
+      const res = await axios.post('/api/banners/add', { username, password, imageUrl });
       setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan!' : '❌ Gagal: ' + res.data.message);
       if(res.data.success) { setImageUrl(''); setPromoText(''); }
     } catch (err) { setUploadMsg('❌ Error: ' + err.message); }
@@ -98,7 +98,7 @@ export default function AdminPage() {
                 {uploadMsg && <p className="text-sm bg-black/20 p-2 rounded-lg text-orange-300">{uploadMsg}</p>}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input type="url" placeholder="URL Gambar" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" required />
-                  <input type="text" placeholder="Teks Promosi" value={promoText} onChange={(e) => setPromoText(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" required />
+                  
                 </div>
                 <button type="submit" className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 rounded-xl font-heading font-bold text-sm text-white transition-all">UPLOAD</button>
               </form>
