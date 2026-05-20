@@ -92,15 +92,21 @@ export default function AdminPage() {
                 <p className="font-heading font-black text-4xl text-white">Rp {Number(totalBalance).toLocaleString('id-ID')}</p>
               </div>
 
-              {/* Upload Banner */}
+                            {/* Upload Banner */}
               <form onSubmit={handleUploadBanner} className="space-y-3 border-b border-orange-500/10 pb-8">
                 <h3 className="font-heading font-bold text-lg text-orange-400 flex items-center gap-2"><FaUpload /> Upload Banner</h3>
                 {uploadMsg && <p className="text-sm bg-black/20 p-2 rounded-lg text-orange-300">{uploadMsg}</p>}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input type="url" placeholder="URL Gambar" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" required />
-                  
-                </div>
-                <button type="submit" className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 rounded-xl font-heading font-bold text-sm text-white transition-all">UPLOAD</button>
+                <input 
+                  type="url" 
+                  placeholder="Masukkan URL Gambar Banner (cth: https://i.imgur.com/gambar.png)" 
+                  value={imageUrl} 
+                  onChange={(e) => setImageUrl(e.target.value)} 
+                  className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" 
+                  required 
+                />
+                <button type="submit" className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 rounded-xl font-heading font-bold text-sm text-white transition-all">
+                  UPLOAD BANNER
+                </button>
               </form>
 
               {/* Riwayat Transaksi */}
