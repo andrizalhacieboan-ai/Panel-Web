@@ -1,4 +1,3 @@
-// api/banners/add.js
 import { execute } from '../_lib/db.js';
 
 export default async function handler(req, res) {
@@ -20,17 +19,19 @@ export default async function handler(req, res) {
 
     const { username, password, imageUrl, text } = body;
 
+    // Cek Kredensial Admin
     if (username !== 'andriyt' || password !== 'andri2002') {
       return res.status(401).json({ success: false, message: "Akses ditolak! Username atau password salah." });
     }
 
-    if (!imageUrl || !text) {
-      return res.status(400).json({ success: false, message: "URL Gambar dan Teks wajib diisi!" });
+    // HANYA gambar yang wajib, teks opsional
+    if (!imageUrl) {
+      return res.status(400).json({ success: false, message: "URL Gambar wajib diisi!" });
     }
 
     await execute(
       'INSERT INTO banners (imageUrl, text, createdAt) VALUES (?, ?, ?)',
-      [imageUrl, text, Date.now()]
+      [imageUrl, text || '', Date.now()] // Jika text tidak ada, simpan string kosong
     );
 
     return res.status(200).json({ success: true, message: "Banner berhasil ditambahkan!" });
