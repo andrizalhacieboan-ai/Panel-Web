@@ -54,14 +54,22 @@ export default function AdminPage() {
     } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
   };
 
-  const handleSimulate = async (orderId) => {
+    const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
     setTxMsg('⏳ Menyimulasikan pembayaran...');
     try {
       const res = await axios.post('/api/admin/simulate', { username, password, orderId });
-      setTxMsg(res.data.success ? '✅ Sukses! Panel telah dibuat.' : '❌ Gagal: ' + res.data.message);
-      fetchTransactions(); // Refresh list
-    } catch(err) { setTxMsg('❌ Error: ' + err.message); }
+      if (res.data.success) {
+        setTxMsg('✅ ' + res.data.message);
+        fetchTransactions(); // Refresh list
+      } else {
+        setTxMsg('❌ Gagal: ' + res.data.message);
+      }
+    } catch(err) {
+      // Tangkap error asli dari Backend (bukan hanya 500 generik)
+      const serverMsg = err.response?.data?.message || err.message;
+      setTxMsg('❌ Error: ' + serverMsg);
+    }
   };
 
   return (
