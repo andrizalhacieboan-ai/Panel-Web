@@ -45,11 +45,11 @@ export default async function handler(req, res) {
     
     if (panelRes.success) {
       await execute("UPDATE orders SET panelData = ? WHERE orderId = ?", [JSON.stringify(panelRes.data), orderId]);
-      return res.status(200).json({ success: true, message: "✅ Order berhasil di-approve manual & Panel berhasil dibuat!" });
+      return res.status(200).json({ success: true, message: "✅ Order berhasil & Panel berhasil dibuat!" });
     } else {
       return res.status(500).json({ 
         success: false, 
-        message: `Order di-approve, tapi gagal buat panel Pterodactyl: ${panelRes.message}` 
+        message: `gagal buat panel Pterodactyl: ${panelRes.message}` 
       });
     }
 
