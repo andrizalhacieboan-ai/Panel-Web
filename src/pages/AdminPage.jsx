@@ -43,14 +43,15 @@ export default function AdminPage() {
     }
   };
 
-  const handleUploadBanner = async (e) => {
+    const handleUploadBanner = async (e) => {
     e.preventDefault();
     setUploadMsg('⏳ Mengunggah banner...');
     try {
-      const res = await axios.post('/api/banners/add', { username, password, imageUrl, text: promoText });
-      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan!' : '❌ Gagal: ' + res.data.message);
-      if(res.data.success) { setImageUrl(''); setPromoText(''); }
-    } catch (err) { setUploadMsg('❌ Error: ' + err.message); }
+      // Hanya kirim imageUrl
+      const res = await axios.post('/api/banners/add', { username, password, imageUrl });
+      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan! Refresh halaman utama untuk melihatnya.' : '❌ Gagal: ' + res.data.message);
+      if(res.data.success) { setImageUrl(''); }
+    } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
   };
 
   const handleSimulate = async (orderId) => {
