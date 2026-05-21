@@ -11,8 +11,7 @@ export default function AdminPage() {
   
   // Banner state
   const [imageUrl, setImageUrl] = useState('');
-
-  const [deleteMsg, setDeleteMsg] = useState('');  
+  const [promoText, setPromoText] = useState('');
   const [uploadMsg, setUploadMsg] = useState('');
 
   // Admin Transaksi State
@@ -44,48 +43,25 @@ export default function AdminPage() {
     }
   };
 
-    const handleUploadBanner = async (e) => {
+  const handleUploadBanner = async (e) => {
     e.preventDefault();
     setUploadMsg('⏳ Mengunggah banner...');
     try {
-      // Hanya kirim imageUrl
-      const res = await axios.post('/api/banners/add', { username, password, imageUrl });
-      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan! Refresh halaman utama untuk melihatnya.' : '❌ Gagal: ' + res.data.message);
-      if(res.data.success) { setImageUrl(''); }
-    } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
+      const res = await axios.post('/api/banners/add', { username, password, imageUrl, text: promoText });
+      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan!' : '❌ Gagal: ' + res.data.message);
+      if(res.data.success) { setImageUrl(''); setPromoText(''); }
+    } catch (err) { setUploadMsg('❌ Error: ' + err.message); }
   };
 
-  // Fungsi handleDeleteBanner
-const handleDeleteBanner = async (bannerId) => {
-  if(!confirm('Hapus banner ini?')) return;
-  try {
-    const res = await axios.post('/api/banners/delete', { username, password, bannerId });
-    setDeleteMsg(res.data.message);
-    // Refresh banners (Anda bisa buat fungsi fetchBanners di admin jika perlu, untuk sementara refresh page)
-    if(res.data.success) setTimeout(() => window.location.reload(), 1000);
-  } catch(err) {
-    setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
-  }
-};
-
-    const handleSimulate = async (orderId) => {
+  const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
     setTxMsg('⏳ Menyimulasikan pembayaran...');
     try {
       const res = await axios.post('/api/admin/simulate', { username, password, orderId });
-      if (res.data.success) {
-        setTxMsg('✅ ' + res.data.message);
-        fetchTransactions(); // Refresh list
-      } else {
-        setTxMsg('❌ Gagal: ' + res.data.message);
-      }
-    } catch(err) {
-      // Tangkap error asli dari Backend (bukan hanya 500 generik)
-      const serverMsg = err.response?.data?.message || err.message;
-      setTxMsg('❌ Error: ' + serverMsg);
-    }
+      setTxMsg(res.data.success ? '✅ Sukses! Panel telah dibuat.' : '❌ Gagal: ' + res.data.message);
+      fetchTransactions(); // Refresh list
+    } catch(err) { setTxMsg('❌ Error: ' + err.message); }
   };
-  
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0204] via-[#1a0800] to-[#050005] text-white font-body relative overflow-hidden flex items-center justify-center p-4">
@@ -116,35 +92,16 @@ const handleDeleteBanner = async (bannerId) => {
                 <p className="font-heading font-black text-4xl text-white">Rp {Number(totalBalance).toLocaleString('id-ID')}</p>
               </div>
 
-                            {/* Upload Banner */}
+              {/* Upload Banner */}
               <form onSubmit={handleUploadBanner} className="space-y-3 border-b border-orange-500/10 pb-8">
                 <h3 className="font-heading font-bold text-lg text-orange-400 flex items-center gap-2"><FaUpload /> Upload Banner</h3>
                 {uploadMsg && <p className="text-sm bg-black/20 p-2 rounded-lg text-orange-300">{uploadMsg}</p>}
-                <input 
-                  type="url" 
-                  placeholder="Masukkan URL Gambar Banner (cth: https://i.imgur.com/gambar.png)" 
-                  value={imageUrl} 
-                  onChange={(e) => setImageUrl(e.target.value)} 
-                  className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" 
-                  required 
-                />
-                <button type="submit" className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 rounded-xl font-heading font-bold text-sm text-white transition-all">
-                  UPLOAD BANNER
-                </button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input type="url" placeholder="URL Gambar" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" required />
+                  <input type="text" placeholder="Teks Promosi" value={promoText} onChange={(e) => setPromoText(e.target.value)} className="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-orange-500/20 text-white text-sm focus:outline-none focus:border-orange-500" required />
+                </div>
+                <button type="submit" className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 rounded-xl font-heading font-bold text-sm text-white transition-all">UPLOAD</button>
               </form>
-
-              
-
-// Di dalam UI Admin (misal di bawah form upload)
-<div className="mt-6 border-t border-orange-500/10 pt-4">
-  <h3 className="font-heading font-bold text-lg text-red-400">Hapus Banner</h3>
-  {deleteMsg && <p className="text-sm my-2 text-orange-300">{deleteMsg}</p>}
-  <div className="space-y-2">
-    {/* Anda perlu fetch banners di admin, atau hardcode id. Untuk simpelnya, input ID */}
-    <input type="number" placeholder="ID Banner (Lihat DB)" onChange={(e) => setBannerIdToDelete(e.target.value)} className="w-full px-4 py-2 rounded bg-black/30 border border-red-500/20 text-white text-sm" />
-    <button onClick={() => handleDeleteBanner(bannerIdToDelete)} className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white text-sm font-bold">HAPUS</button>
-  </div>
-</div>
 
               {/* Riwayat Transaksi */}
               <div>
