@@ -41,6 +41,11 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
     if (password.length < 8) return alert('Password minimal 8 karakter!'); 
     setStep('loading'); 
     try { 
+      const res = await createOrder(
+  { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
+  { headers: { 'x-user-id': user?.id } } // Kirim userId
+);
+
       const res = await createOrder({ username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }); 
       if (res.data.success) { setOrderId(res.data.orderId); setQrBase64(res.data.qrBase64); setAmount(res.data.amount); setFee(res.data.fee); setStep('qris'); startPolling(res.data.orderId); } 
       else { setErrorMsg(res.data.message); setStep('error'); } 
@@ -71,11 +76,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
     }, 3000); 
   };
 
-  const res = await createOrder(
-  { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
-  { headers: { 'x-user-id': user?.id } } // Kirim userId
-);
-
+  
   if (!isOpen || !paket) return null; 
   const isAdmin = paket.type === 'admin';
 
