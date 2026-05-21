@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react'; 
 import { createOrder, checkOrderStatus } from '../api'; 
+import { useContext } from 'react';
+import { AuthContext } from '../components/AuthContext';
 import { FaTimes, FaSpinner, FaCheckCircle, FaCrown, FaEye, FaEyeSlash, FaExclamationTriangle } from 'react-icons/fa';
 
 export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName = '' }) {
+  const { user } = useContext(AuthContext);
   const [step, setStep] = useState('input'); 
   const [username, setUsername] = useState(''); 
   const [password, setPassword] = useState(''); 
@@ -15,6 +18,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
   const [panelData, setPanelData] = useState(null); 
   const [errorMsg, setErrorMsg] = useState(''); 
   const pollInterval = useRef(null);
+  
   
   useEffect(() => { 
     if (!isOpen) { 
@@ -66,6 +70,11 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
       } 
     }, 3000); 
   };
+
+  const res = await createOrder(
+  { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
+  { headers: { 'x-user-id': user?.id } } // Kirim userId
+);
 
   if (!isOpen || !paket) return null; 
   const isAdmin = paket.type === 'admin';
