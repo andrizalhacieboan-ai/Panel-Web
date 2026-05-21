@@ -41,7 +41,7 @@ export default function AdminPage() {
   // Fungsi baru untuk mengambil list banner yang aktif
   const fetchBanners = async () => {
     try {
-      const res = await axios.get('/api/banners'); // Menyesuaikan endpoint get banners kamu
+      const res = await axios.get('/api/banners/get'); // Menyesuaikan endpoint get banners kamu
       if (res.data.success) {
         setBanners(res.data.banners || res.data.data || []);
       }
