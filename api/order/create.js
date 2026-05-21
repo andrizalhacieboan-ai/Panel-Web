@@ -12,10 +12,8 @@ export default async function handler(req, res) {
     let body = req.body; if (typeof body === 'string') try { body = JSON.parse(body); } catch(e) {}
     const { username, password, ram, amount, type } = body || {};
     
-    // WAJIB LOGIN (Cek userId dari header)
-    const userId = req.headers['x-user-id'];
-    if (!userId) return res.status(401).json({ success: false, message: "Anda harus login untuk membeli!" });
-
+    
+    
     if (!username || !password || !amount || !type) return res.status(400).json({ success: false, message: "Data tidak lengkap" });
 
     const fee = Math.floor(Math.random() * (200 - 100 + 1)) + 100;
