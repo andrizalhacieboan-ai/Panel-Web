@@ -44,14 +44,15 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
       const res = await createOrder(
   { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
   { headers: { 'x-user-id': user?.id } } // Kirim userId
-);
 
-      const res = await createOrder({ username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }); 
+);
+     
       if (res.data.success) { setOrderId(res.data.orderId); setQrBase64(res.data.qrBase64); setAmount(res.data.amount); setFee(res.data.fee); setStep('qris'); startPolling(res.data.orderId); } 
       else { setErrorMsg(res.data.message); setStep('error'); } 
     } catch (err) { 
       setErrorMsg("Gagal terhubung ke server pembayaran."); setStep('error'); 
-    } 
+    }
+     
   };
 
   const startPolling = (oid) => { 
