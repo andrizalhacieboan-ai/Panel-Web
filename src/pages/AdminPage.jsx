@@ -11,7 +11,7 @@ export default function AdminPage() {
   
   // Banner state
   const [imageUrl, setImageUrl] = useState('');
-  const [promoText, setPromoText] = useState('');
+  const [deleteMsg, setDeleteMsg] = useState('');
   const [uploadMsg, setUploadMsg] = useState('');
 
   // Admin Transaksi State
@@ -53,6 +53,21 @@ export default function AdminPage() {
       if(res.data.success) { setImageUrl(''); }
     } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
   };
+
+
+
+const handleDeleteBanner = async (bannerId) => {
+  if(!confirm('Hapus banner ini?')) return;
+  try {
+    const res = await axios.post('/api/banners/delete', { username, password, bannerId });
+    setDeleteMsg(res.data.message);
+    // Refresh banners (Anda bisa buat fungsi fetchBanners di admin jika perlu, untuk sementara refresh page)
+    if(res.data.success) setTimeout(() => window.location.reload(), 1000);
+  } catch(err) {
+    setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
+  }
+};
+  
 
   const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
@@ -109,6 +124,18 @@ export default function AdminPage() {
                   UPLOAD BANNER
                 </button>
               </form>
+
+              
+
+<div className="mt-6 border-t border-orange-500/10 pt-4">
+  <h3 className="font-heading font-bold text-lg text-red-400">Hapus Banner</h3>
+  {deleteMsg && <p className="text-sm my-2 text-orange-300">{deleteMsg}</p>}
+  <div className="space-y-2">
+    {/* Anda perlu fetch banners di admin, atau hardcode id. Untuk simpelnya, input ID */}
+    <input type="number" placeholder="ID Banner" onChange={(e) => setBannerIdToDelete(e.target.value)} className="w-full px-4 py-2 rounded bg-black/30 border border-red-500/20 text-white text-sm" />
+    <button onClick={() => handleDeleteBanner(bannerIdToDelete)} className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white text-sm font-bold">HAPUS</button>
+  </div>
+</div>
 
               {/* Riwayat Transaksi */}
               <div>
