@@ -1,6 +1,9 @@
 import { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 import { FaDiscord } from 'react-icons/fa';
+import { useContext } from 'react';
+import { AuthContext } from '../components/AuthContext';
+import { FaUser } from 'react-icons/fa';
 
 const menuItems = [
   { label: 'BERANDA', href: '#beranda', active: true, isRoute: false }, 
@@ -16,6 +19,7 @@ export function HexLogo({ size = 'w-9 h-9', textSize = 'text-xs' }) {
 }
 
 export default function Navbar() { 
+  const { user, logout } = useContext(AuthContext);
   const [m, sm] = useState(false); 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-cyber-dark/80 backdrop-blur-md border-b border-neon-purple/20">
@@ -57,6 +61,16 @@ export default function Navbar() {
           ))}
         </div>
       )}
+
+      
+{user ? (
+  <>
+    <Link to="/profile" className="px-3 py-1.5 rounded-full text-xs font-heading font-semibold text-neon-purple-light hover:bg-white/5 flex items-center gap-1"><FaUser size={10}/> PROFIL</Link>
+    <button onClick={logout} className="text-red-400 text-xs font-heading font-semibold hover:text-red-300">LOGOUT</button>
+  </>
+) : (
+  <Link to="/login" className="px-3 py-1.5 rounded-full text-xs font-heading font-semibold text-gray-400 hover:text-white hover:bg-white/5">LOGIN</Link>
+)}
     </nav>
   ); 
 }
