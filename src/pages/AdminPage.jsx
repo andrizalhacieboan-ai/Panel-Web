@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaLock, FaUpload, FaShieldAlt, FaWallet, FaHistory, FaPlayCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaLock, FaUpload, FaShieldAlt, FaWallet, FaHistory, FaPlayCircle, FaTrashAlt } from 'react-icons/fa';
 import axios from 'axios';
 
 export default function AdminPage() {
@@ -13,14 +13,19 @@ export default function AdminPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [uploadMsg, setUploadMsg] = useState('');
+  const [banners, setBanners] = useState([]); // State baru untuk menampung list banner
 
   // Admin Transaksi State
   const [transactions, setTransactions] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
   const [txMsg, setTxMsg] = useState('');
 
+  // Otomatis fetch banners & transaksi saat login sukses
   useEffect(() => {
-    if (isLoggedIn) fetchTransactions();
+    if (isLoggedIn) {
+      fetchTransactions();
+      fetchBanners();
+    }
   }, [isLoggedIn]);
 
   const fetchTransactions = async () => {
@@ -33,6 +38,16 @@ export default function AdminPage() {
     } catch(err) { console.error(err); }
   };
 
+  // Fungsi baru untuk mengambil list banner yang aktif
+  const fetchBanners = async () => {
+    try {
+      const res = await axios.get('/api/banners'); // Menyesuaikan endpoint get banners kamu
+      if (res.data.success) {
+        setBanners(res.data.banners || res.data.data || []);
+      }
+    } catch (err) { console.error('Gagal memuat banner:', err); }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === 'andriyt' && password === 'andri2002') {
@@ -43,39 +58,40 @@ export default function AdminPage() {
     }
   };
 
-    const handleUploadBanner = async (e) => {
+  const handleUploadBanner = async (e) => {
     e.preventDefault();
     setUploadMsg('⏳ Mengunggah banner...');
     try {
-      // Hanya kirim imageUrl
       const res = await axios.post('/api/banners/add', { username, password, imageUrl });
-      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan! Refresh halaman utama untuk melihatnya.' : '❌ Gagal: ' + res.data.message);
-      if(res.data.success) { setImageUrl(''); }
+      setUploadMsg(res.data.success ? '✅ Banner berhasil ditambahkan!' : '❌ Gagal: ' + res.data.message);
+      if(res.data.success) { 
+        setImageUrl(''); 
+        fetchBanners(); // Langsung refresh list banner tanpa reload halaman
+      }
     } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
   };
 
-
-
-const handleDeleteBanner = async (bannerId) => {
-  if(!confirm('Hapus banner ini?')) return;
-  try {
-    const res = await axios.post('/api/banners/delete', { username, password, bannerId });
-    setDeleteMsg(res.data.message);
-    // Refresh banners (Anda bisa buat fungsi fetchBanners di admin jika perlu, untuk sementara refresh page)
-    if(res.data.success) setTimeout(() => window.location.reload(), 1000);
-  } catch(err) {
-    setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
-  }
-};
+  const handleDeleteBanner = async (bannerId) => {
+    if(!confirm('Hapus banner ini?')) return;
+    try {
+      const res = await axios.post('/api/banners/delete', { username, password, bannerId });
+      setDeleteMsg(res.data.message);
+      if(res.data.success) {
+        fetchBanners(); // Langsung update list banner terbaru tanpa reload halaman full
+        setTimeout(() => setDeleteMsg(''), 3000);
+      }
+    } catch(err) {
+      setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
+    }
+  };
   
-
   const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
     setTxMsg('⏳ Menyimulasikan pembayaran...');
     try {
       const res = await axios.post('/api/admin/simulate', { username, password, orderId });
       setTxMsg(res.data.success ? '✅ Sukses! Panel telah dibuat.' : '❌ Gagal: ' + res.data.message);
-      fetchTransactions(); // Refresh list
+      fetchTransactions(); 
     } catch(err) { setTxMsg('❌ Error: ' + err.message); }
   };
 
@@ -125,17 +141,36 @@ const handleDeleteBanner = async (bannerId) => {
                 </button>
               </form>
 
-              
-
-<div className="mt-6 border-t border-orange-500/10 pt-4">
-  <h3 className="font-heading font-bold text-lg text-red-400">Hapus Banner</h3>
-  {deleteMsg && <p className="text-sm my-2 text-orange-300">{deleteMsg}</p>}
-  <div className="space-y-2">
-    {/* Anda perlu fetch banners di admin, atau hardcode id. Untuk simpelnya, input ID */}
-    <input type="number" placeholder="ID Banner" onChange={(e) => setBannerIdToDelete(e.target.value)} className="w-full px-4 py-2 rounded bg-black/30 border border-red-500/20 text-white text-sm" />
-    <button onClick={() => handleDeleteBanner(bannerIdToDelete)} className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white text-sm font-bold">HAPUS</button>
-  </div>
-</div>
+              {/* List Banner & Logo Delete Klik (PENGGANTI INPUT ID BARU) */}
+              <div className="border-b border-orange-500/10 pb-8">
+                <h3 className="font-heading font-bold text-lg text-red-400 mb-4">Daftar Banner Aktif</h3>
+                {deleteMsg && <p className="text-sm my-2 text-orange-300 bg-black/20 p-2 rounded-lg">{deleteMsg}</p>}
+                
+                {banners.length === 0 ? (
+                  <p className="text-gray-500 text-sm text-center py-4 bg-black/10 rounded-xl border border-dashed border-orange-500/10">Belum ada banner terpasang.</p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {banners.map((bn) => (
+                      <div key={bn.id} className="relative group rounded-xl overflow-hidden border border-orange-500/20 bg-black/40 p-2 flex flex-col justify-between gap-2">
+                        <img 
+                          src={bn.image_url || bn.imageUrl} 
+                          alt="Banner Admin" 
+                          className="w-full h-24 object-cover rounded-lg bg-cyber-dark"
+                        />
+                        <div className="flex items-center justify-between px-1">
+                          <span className="text-[10px] text-gray-500">ID: {bn.id}</span>
+                          <button 
+                            onClick={() => handleDeleteBanner(bn.id)}
+                            className="px-3 py-1 bg-red-600/80 hover:bg-red-700 text-white text-xs font-heading font-bold rounded-lg flex items-center gap-1 transition-all"
+                          >
+                            <FaTrashAlt size={10} /> HAPUS
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {/* Riwayat Transaksi */}
               <div>
