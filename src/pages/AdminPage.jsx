@@ -74,7 +74,7 @@ export default function AdminPage() {
   const handleDeleteBanner = async (bannerId) => {
     if(!confirm('Hapus banner ini?')) return;
     try {
-      const res = await axios.post('/api/banners/delete', { username, password, bannerId });
+      const res = await axios.post('/api/banner/delete', { username, password, bannerId });
       setDeleteMsg(res.data.message);
       if(res.data.success) {
         fetchBanners(); // Langsung update list banner terbaru tanpa reload halaman full
