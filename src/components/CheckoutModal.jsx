@@ -19,7 +19,6 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
   const [errorMsg, setErrorMsg] = useState(''); 
   const pollInterval = useRef(null);
   
-  
   useEffect(() => { 
     if (!isOpen) { 
       setStep('input'); 
@@ -36,33 +35,27 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
     }
   }, [isOpen, initialOwnerName]);
 
-  const handleOrder = async () => { 
-    if (!username || !password) return alert('Username dan Password wajib diisi!'); 
-    if (password.length < 8) return alert('Password minimal 8 karakter!'); 
-    setStep('loading'); 
-    try { 
-      const res = await createOrder(
-  { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
-  { headers: { 'x-user-id': user?.id } } // Kirim userId
-
-);
-     
-
+  // Fungsi Polling dipisah ke luar agar tidak menumpuk di dalam handleOrder
   const startPolling = (oid) => { 
     clearInterval(pollInterval.current); 
     pollInterval.current = setInterval(async () => { 
       try { 
-        const res = await checkOrderStatus(oid); 
-        const { status, panelData: pData } = res.data; 
+        const responsePoll = await checkOrderStatus(oid); 
+        const { status, panelData: pData } = responsePoll.data; 
         if (status === 'paid') { 
           clearInterval(pollInterval.current); 
-          if (pData) { setPanelData(pData); setStep('success'); } 
-          else { 
-            const serverError = res.data.error || "Gagal membuat panel di Pterodactyl. Hubungi Admin!"; 
-            setErrorMsg(serverError); setStep('error'); 
+          if (pData) { 
+            setPanelData(pData); 
+            setStep('success'); 
+          } else { 
+            const serverError = responsePoll.data.error || "Gagal membuat panel di Pterodactyl. Hubungi Admin!"; 
+            setErrorMsg(serverError); 
+            setStep('error'); 
           } 
         } else if (status === 'expired') { 
-          clearInterval(pollInterval.current); setErrorMsg("Waktu pembayaran habis! Silakan order ulang."); setStep('error'); 
+          clearInterval(pollInterval.current); 
+          setErrorMsg("Waktu pembayaran habis! Silakan order ulang."); 
+          setStep('error'); 
         } 
       } catch (err) { 
         console.error(err); 
@@ -70,6 +63,33 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
     }, 3000); 
   };
 
+  const handleOrder = async () => { 
+    if (!username || !password) return alert('Username dan Password wajib diisi!'); 
+    if (password.length < 8) return alert('Password minimal 8 karakter!'); 
+    setStep('loading'); 
+    try { 
+      const res = await createOrder(
+        { username, password, ram: paket?.ram, amount: paket?.harga, type: paket?.type }, 
+        { headers: { 'x-user-id': user?.id } }
+      );
+
+      if (res.data.success) { 
+        setOrderId(res.data.orderId); 
+        setQrBase64(res.data.qrBase64); 
+        setAmount(res.data.amount); 
+        setFee(res.data.fee); 
+        setStep('qris'); 
+        startPolling(res.data.orderId); 
+      } else { 
+        setErrorMsg(res.data.message); 
+        setStep('error'); 
+      } 
+    } catch (error) {
+      console.error(error);
+      setErrorMsg(error.response?.data?.message || "Terjadi kesalahan saat membuat pesanan.");
+      setStep('error');
+    }
+  };
   
   if (!isOpen || !paket) return null; 
   const isAdmin = paket.type === 'admin';
@@ -112,7 +132,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
                 onClick={() => {
                   if (!username || !password) return alert('Username dan Password wajib diisi!'); 
                   if (password.length < 8) return alert('Password minimal 8 karakter!');
-                  setStep('confirm'); // Pindah ke tahap konfirmasi
+                  setStep('confirm'); 
                 }} 
                 className={`btn-glow w-full py-4 rounded-xl font-heading font-bold tracking-wider text-white transition-all ${isAdmin ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 'bg-gradient-to-r from-neon-purple to-neon-purple-dark'}`}
               >
@@ -157,7 +177,7 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
           )}
           
           {/* ==================== STEP 4: QRIS ==================== */}
-                    {step === 'qris' && (
+          {step === 'qris' && (
             <div className="text-center">
               <h3 className="font-heading font-bold text-xl text-white mb-2">Scan QRIS untuk Bayar</h3>
               <p className="text-sm text-gray-400 mb-6">Total: <span className="text-white font-bold text-lg">Rp {amount.toLocaleString('id-ID')}</span> <span className="text-xs">(Fee Rp {fee.toLocaleString('id-ID')})</span></p>
@@ -169,7 +189,6 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
                   <FaSpinner className="animate-spin text-lg" />
                   <p className="text-sm font-medium">Menunggu pembayaran...</p>
                 </div>
-                {/* Tombol Cancel Baru */}
                 <button 
                   onClick={async () => {
                     if(confirm('Yakin ingin membatalkan pesanan?')) {
