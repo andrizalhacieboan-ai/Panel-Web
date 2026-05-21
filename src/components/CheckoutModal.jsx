@@ -47,13 +47,6 @@ export default function CheckoutModal({ isOpen, onClose, paket, initialOwnerName
 
 );
      
-      if (res.data.success) { setOrderId(res.data.orderId); setQrBase64(res.data.qrBase64); setAmount(res.data.amount); setFee(res.data.fee); setStep('qris'); startPolling(res.data.orderId); } 
-      else { setErrorMsg(res.data.message); setStep('error'); } 
-    } catch (err) { 
-      setErrorMsg("Gagal terhubung ke server pembayaran."); setStep('error'); 
-    }
-     
-  };
 
   const startPolling = (oid) => { 
     clearInterval(pollInterval.current); 
