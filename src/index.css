@@ -72,22 +72,13 @@ body { overflow-x: hidden; background: #0a0420; }
 
 /* ===== Animasi Marquee Banner (Roda Mulus 100%) ===== */
 @keyframes marquee {
-  0% { 
-    transform: translateX(0); 
-  }
-  100% { 
-    /* Geser tepat setengah dari total lebar container gabungan */
-    transform: translateX(-50%); 
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-
 .animate-marquee {
-  display: flex; /* Memastikan semua banner berbaris menyamping */
-  width: max-content; /* Paksa container melebar mengikuti total konten */
-  animation: marquee 25s linear infinite; /* Dipercepat ke 25s agar lebih dinamis, sesuaikan kebutuhan */
-  will-change: transform;
+  animation: marquee 40s linear infinite; /* Sesuaikan kecepatan di sini */
+  will-change: transform; /* Paksa GPU render agar tidak stutter */
 }
-
 .animate-marquee:hover {
   animation-play-state: paused;
 }
