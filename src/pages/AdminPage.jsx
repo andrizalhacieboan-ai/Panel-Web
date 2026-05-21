@@ -72,22 +72,18 @@ export default function AdminPage() {
   };
 
   const handleDeleteBanner = async (bannerId) => {
-    if(!confirm('Hapus banner ini?')) return;
-    try {
-      // Menggunakan axios.get dan mengirim data lewat params URL
-      const res = await axios.get('/api/banner/delete', {
-        params: { username, password, bannerId }
-      });
-      
-      setDeleteMsg(res.data.message);
-      if(res.data.success) {
-        fetchBanners(); // Langsung perbarui list grid banner secara real-time
-        setTimeout(() => setDeleteMsg(''), 3000);
-      }
-    } catch(err) {
-      setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
-    }
-  };
+  if(!confirm('Hapus banner ini?')) return;
+  try {
+    const res = await axios.post('/api/banners/delete', { username, password, bannerId });
+    setDeleteMsg(res.data.message);
+    // Refresh banners (Anda bisa buat fungsi fetchBanners di admin jika perlu, untuk sementara refresh page)
+    if(res.data.success) setTimeout(() => window.location.reload(), 1000);
+  } catch(err) {
+    setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
+  }
+};
+
+
   
   const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
