@@ -11,7 +11,8 @@ export default function AdminPage() {
   
   // Banner state
   const [imageUrl, setImageUrl] = useState('');
-  
+
+  const [deleteMsg, setDeleteMsg] = useState('');  
   const [uploadMsg, setUploadMsg] = useState('');
 
   // Admin Transaksi State
@@ -54,6 +55,19 @@ export default function AdminPage() {
     } catch (err) { setUploadMsg('❌ Error: ' + (err.response?.data?.message || err.message)); }
   };
 
+  // Fungsi handleDeleteBanner
+const handleDeleteBanner = async (bannerId) => {
+  if(!confirm('Hapus banner ini?')) return;
+  try {
+    const res = await axios.post('/api/banners/delete', { username, password, bannerId });
+    setDeleteMsg(res.data.message);
+    // Refresh banners (Anda bisa buat fungsi fetchBanners di admin jika perlu, untuk sementara refresh page)
+    if(res.data.success) setTimeout(() => window.location.reload(), 1000);
+  } catch(err) {
+    setDeleteMsg('Gagal hapus: ' + (err.response?.data?.message || err.message));
+  }
+};
+
     const handleSimulate = async (orderId) => {
     if(!confirm('Simulasikan pembayaran untuk order ini? Ini akan membuat panel otomatis.')) return;
     setTxMsg('⏳ Menyimulasikan pembayaran...');
@@ -71,6 +85,7 @@ export default function AdminPage() {
       setTxMsg('❌ Error: ' + serverMsg);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0204] via-[#1a0800] to-[#050005] text-white font-body relative overflow-hidden flex items-center justify-center p-4">
@@ -117,6 +132,19 @@ export default function AdminPage() {
                   UPLOAD BANNER
                 </button>
               </form>
+
+              
+
+// Di dalam UI Admin (misal di bawah form upload)
+<div className="mt-6 border-t border-orange-500/10 pt-4">
+  <h3 className="font-heading font-bold text-lg text-red-400">Hapus Banner</h3>
+  {deleteMsg && <p className="text-sm my-2 text-orange-300">{deleteMsg}</p>}
+  <div className="space-y-2">
+    {/* Anda perlu fetch banners di admin, atau hardcode id. Untuk simpelnya, input ID */}
+    <input type="number" placeholder="ID Banner (Lihat DB)" onChange={(e) => setBannerIdToDelete(e.target.value)} className="w-full px-4 py-2 rounded bg-black/30 border border-red-500/20 text-white text-sm" />
+    <button onClick={() => handleDeleteBanner(bannerIdToDelete)} className="w-full py-2 bg-red-600 hover:bg-red-700 rounded text-white text-sm font-bold">HAPUS</button>
+  </div>
+</div>
 
               {/* Riwayat Transaksi */}
               <div>
