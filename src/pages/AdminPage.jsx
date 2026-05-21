@@ -74,10 +74,14 @@ export default function AdminPage() {
   const handleDeleteBanner = async (bannerId) => {
     if(!confirm('Hapus banner ini?')) return;
     try {
-      const res = await axios.post('/api/banner/delete', { username, password, bannerId });
+      // Menggunakan axios.get dan mengirim data lewat params URL
+      const res = await axios.get('/api/banner/delete', {
+        params: { username, password, bannerId }
+      });
+      
       setDeleteMsg(res.data.message);
       if(res.data.success) {
-        fetchBanners(); // Langsung update list banner terbaru tanpa reload halaman full
+        fetchBanners(); // Langsung perbarui list grid banner secara real-time
         setTimeout(() => setDeleteMsg(''), 3000);
       }
     } catch(err) {
